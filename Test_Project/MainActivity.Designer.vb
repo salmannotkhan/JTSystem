@@ -26,6 +26,7 @@ Partial Class MainActivity
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.navpanel = New System.Windows.Forms.Panel()
+        Me.cmdinventory = New System.Windows.Forms.Label()
         Me.cmdminimize = New System.Windows.Forms.Label()
         Me.cmdclose = New System.Windows.Forms.Label()
         Me.cmdorder = New System.Windows.Forms.Label()
@@ -61,24 +62,46 @@ Partial Class MainActivity
         Me.Label15 = New System.Windows.Forms.Label()
         Me.detailspanel = New System.Windows.Forms.Panel()
         Me.dataDetails = New System.Windows.Forms.DataGridView()
+        Me.inventorypanel = New System.Windows.Forms.Panel()
+        Me.cmddelete = New System.Windows.Forms.Button()
+        Me.cmdadd = New System.Windows.Forms.Button()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.txtProductName = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.selectProductList = New System.Windows.Forms.ComboBox()
         Me.navpanel.SuspendLayout()
         Me.billingpanel.SuspendLayout()
         Me.detailspanel.SuspendLayout()
         CType(Me.dataDetails, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.inventorypanel.SuspendLayout()
         Me.SuspendLayout()
         '
         'navpanel
         '
         Me.navpanel.BackColor = System.Drawing.Color.Black
+        Me.navpanel.Controls.Add(Me.cmdorder)
+        Me.navpanel.Controls.Add(Me.cmdinventory)
         Me.navpanel.Controls.Add(Me.cmdminimize)
         Me.navpanel.Controls.Add(Me.cmdclose)
-        Me.navpanel.Controls.Add(Me.cmdorder)
         Me.navpanel.Controls.Add(Me.cmdbilling)
         Me.navpanel.Dock = System.Windows.Forms.DockStyle.Top
         Me.navpanel.Location = New System.Drawing.Point(0, 0)
         Me.navpanel.Name = "navpanel"
         Me.navpanel.Size = New System.Drawing.Size(800, 50)
         Me.navpanel.TabIndex = 0
+        '
+        'cmdinventory
+        '
+        Me.cmdinventory.AutoSize = True
+        Me.cmdinventory.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmdinventory.ForeColor = System.Drawing.Color.White
+        Me.cmdinventory.Location = New System.Drawing.Point(226, 9)
+        Me.cmdinventory.Name = "cmdinventory"
+        Me.cmdinventory.Padding = New System.Windows.Forms.Padding(10)
+        Me.cmdinventory.Size = New System.Drawing.Size(104, 38)
+        Me.cmdinventory.TabIndex = 4
+        Me.cmdinventory.Tag = "inventorypanel"
+        Me.cmdinventory.Text = "Inventory"
         '
         'cmdminimize
         '
@@ -120,6 +143,7 @@ Partial Class MainActivity
         Me.cmdorder.Padding = New System.Windows.Forms.Padding(10)
         Me.cmdorder.Size = New System.Drawing.Size(126, 38)
         Me.cmdorder.TabIndex = 1
+        Me.cmdorder.Tag = "detailspanel"
         Me.cmdorder.Text = "View Orders"
         '
         'cmdbilling
@@ -132,6 +156,7 @@ Partial Class MainActivity
         Me.cmdbilling.Padding = New System.Windows.Forms.Padding(10)
         Me.cmdbilling.Size = New System.Drawing.Size(76, 38)
         Me.cmdbilling.TabIndex = 0
+        Me.cmdbilling.Tag = "billingpanel"
         Me.cmdbilling.Text = "Billing"
         '
         'billingpanel
@@ -169,7 +194,7 @@ Partial Class MainActivity
         Me.billingpanel.ForeColor = System.Drawing.Color.White
         Me.billingpanel.Location = New System.Drawing.Point(0, 50)
         Me.billingpanel.Name = "billingpanel"
-        Me.billingpanel.Size = New System.Drawing.Size(800, 400)
+        Me.billingpanel.Size = New System.Drawing.Size(800, 0)
         Me.billingpanel.TabIndex = 1
         '
         'Label9
@@ -186,18 +211,19 @@ Partial Class MainActivity
         '
         'selectProduct
         '
-        Me.selectProduct.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
         Me.selectProduct.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
         Me.selectProduct.Cursor = System.Windows.Forms.Cursors.Default
+        Me.selectProduct.DisplayMember = "ProductName"
+        Me.selectProduct.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.selectProduct.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.selectProduct.FormattingEnabled = True
         Me.selectProduct.ItemHeight = 18
-        Me.selectProduct.Items.AddRange(New Object() {"Test1", "Test2 ", "Test3"})
         Me.selectProduct.Location = New System.Drawing.Point(563, 107)
         Me.selectProduct.Margin = New System.Windows.Forms.Padding(2)
         Me.selectProduct.Name = "selectProduct"
         Me.selectProduct.Size = New System.Drawing.Size(226, 26)
         Me.selectProduct.TabIndex = 8
+        Me.selectProduct.ValueMember = "ProductName"
         '
         'dateDate
         '
@@ -488,7 +514,7 @@ Partial Class MainActivity
         Me.detailspanel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.detailspanel.Location = New System.Drawing.Point(0, 50)
         Me.detailspanel.Name = "detailspanel"
-        Me.detailspanel.Size = New System.Drawing.Size(800, 400)
+        Me.detailspanel.Size = New System.Drawing.Size(800, 0)
         Me.detailspanel.TabIndex = 2
         '
         'dataDetails
@@ -530,8 +556,81 @@ Partial Class MainActivity
         Me.dataDetails.ShowCellToolTips = False
         Me.dataDetails.ShowEditingIcon = False
         Me.dataDetails.ShowRowErrors = False
-        Me.dataDetails.Size = New System.Drawing.Size(800, 400)
+        Me.dataDetails.Size = New System.Drawing.Size(800, 0)
         Me.dataDetails.TabIndex = 0
+        '
+        'inventorypanel
+        '
+        Me.inventorypanel.Controls.Add(Me.cmddelete)
+        Me.inventorypanel.Controls.Add(Me.cmdadd)
+        Me.inventorypanel.Controls.Add(Me.Label2)
+        Me.inventorypanel.Controls.Add(Me.txtProductName)
+        Me.inventorypanel.Controls.Add(Me.Label1)
+        Me.inventorypanel.Controls.Add(Me.selectProductList)
+        Me.inventorypanel.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.inventorypanel.Location = New System.Drawing.Point(0, 50)
+        Me.inventorypanel.Name = "inventorypanel"
+        Me.inventorypanel.Size = New System.Drawing.Size(800, 400)
+        Me.inventorypanel.TabIndex = 3
+        '
+        'cmddelete
+        '
+        Me.cmddelete.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmddelete.Location = New System.Drawing.Point(322, 105)
+        Me.cmddelete.Name = "cmddelete"
+        Me.cmddelete.Size = New System.Drawing.Size(157, 23)
+        Me.cmddelete.TabIndex = 5
+        Me.cmddelete.Text = "Delete Product"
+        Me.cmddelete.UseVisualStyleBackColor = True
+        '
+        'cmdadd
+        '
+        Me.cmdadd.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmdadd.Location = New System.Drawing.Point(322, 28)
+        Me.cmdadd.Name = "cmdadd"
+        Me.cmdadd.Size = New System.Drawing.Size(157, 23)
+        Me.cmdadd.TabIndex = 4
+        Me.cmdadd.Text = "Add Product"
+        Me.cmdadd.UseVisualStyleBackColor = True
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(26, 107)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(127, 18)
+        Me.Label2.TabIndex = 3
+        Me.Label2.Text = "Product Name:"
+        '
+        'txtProductName
+        '
+        Me.txtProductName.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtProductName.Location = New System.Drawing.Point(157, 27)
+        Me.txtProductName.Name = "txtProductName"
+        Me.txtProductName.Size = New System.Drawing.Size(127, 26)
+        Me.txtProductName.TabIndex = 2
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(26, 30)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(127, 18)
+        Me.Label1.TabIndex = 1
+        Me.Label1.Text = "Product Name:"
+        '
+        'selectProductList
+        '
+        Me.selectProductList.DisplayMember = "Id"
+        Me.selectProductList.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.selectProductList.FormattingEnabled = True
+        Me.selectProductList.Location = New System.Drawing.Point(157, 104)
+        Me.selectProductList.Name = "selectProductList"
+        Me.selectProductList.Size = New System.Drawing.Size(127, 26)
+        Me.selectProductList.TabIndex = 0
+        Me.selectProductList.ValueMember = "Id"
         '
         'MainActivity
         '
@@ -541,6 +640,7 @@ Partial Class MainActivity
         Me.Controls.Add(Me.detailspanel)
         Me.Controls.Add(Me.billingpanel)
         Me.Controls.Add(Me.navpanel)
+        Me.Controls.Add(Me.inventorypanel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "MainActivity"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
@@ -550,6 +650,8 @@ Partial Class MainActivity
         Me.billingpanel.PerformLayout()
         Me.detailspanel.ResumeLayout(False)
         CType(Me.dataDetails, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.inventorypanel.ResumeLayout(False)
+        Me.inventorypanel.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -590,4 +692,12 @@ Partial Class MainActivity
     Friend WithEvents cmdminimize As Label
     Friend WithEvents detailspanel As Panel
     Friend WithEvents dataDetails As DataGridView
+    Friend WithEvents inventorypanel As Panel
+    Friend WithEvents cmddelete As Button
+    Friend WithEvents cmdadd As Button
+    Friend WithEvents Label2 As Label
+    Friend WithEvents txtProductName As TextBox
+    Friend WithEvents Label1 As Label
+    Friend WithEvents selectProductList As ComboBox
+    Friend WithEvents cmdinventory As Label
 End Class

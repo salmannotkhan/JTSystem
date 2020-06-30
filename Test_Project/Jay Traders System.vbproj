@@ -110,6 +110,16 @@
     <Compile Include="CustomDialog.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="JTBASEDataSet.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JTBASEDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="JTBASEDataSet1.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JTBASEDataSet1.xsd</DependentUpon>
+    </Compile>
     <Compile Include="MainActivity.Designer.vb">
       <DependentUpon>MainActivity.vb</DependentUpon>
     </Compile>
@@ -157,6 +167,28 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="JTBASEDataSet.xsc">
+      <DependentUpon>JTBASEDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="JTBASEDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>JTBASEDataSet.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="JTBASEDataSet.xss">
+      <DependentUpon>JTBASEDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="JTBASEDataSet1.xsc">
+      <DependentUpon>JTBASEDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="JTBASEDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>JTBASEDataSet1.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="JTBASEDataSet1.xss">
+      <DependentUpon>JTBASEDataSet1.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Template.docx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

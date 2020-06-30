@@ -8,6 +8,11 @@ Public Class MainActivity
     Dim dsBuyers As New DataSet
     Dim query As String
     Dim total As Double
+    Dim rate As Double
+    Dim amount As Double
+    Dim taxable As Double
+    Dim gst As Double
+    Dim fraction As Double
 
     Public Const WM_NCLBUTTONDOWN As Integer = &HA1
     Public Const HT_CAPTION As Integer = &H2
@@ -49,9 +54,10 @@ Public Class MainActivity
         If Not bId Then
             bId = InsertBuyersDetails()
         End If
-
+        Calculations()
         Dim oId As Integer = InsertOrderDetails(bId)
         GenerateInvoice(oId)
+        LoadOrders()
     End Sub
 
     Public Function InsertBuyersDetails()
@@ -74,11 +80,12 @@ Public Class MainActivity
 
     Public Function InsertOrderDetails(id)
         con.Open()
-        query = "INSERT INTO Orders VALUES(@buyerid, @date, @hsn, @rate, @qty, @labor, @total, @transporter); SELECT SCOPE_IDENTITY();"
+        query = "INSERT INTO Orders VALUES(@buyerid, @date, @productname, @hsn, @rate, @qty, @labor, @total, @transporter); SELECT SCOPE_IDENTITY();"
         Dim oId As Integer
         Using cmd As New SqlCommand(query, con)
             cmd.Parameters.AddWithValue("@buyerid", id)
             cmd.Parameters.AddWithValue("@date", dateDate.Value)
+            cmd.Parameters.AddWithValue("@productname", selectProduct.Text)
             cmd.Parameters.AddWithValue("@hsn", txtHSN.Text)
             cmd.Parameters.AddWithValue("@rate", txtRate.Text)
             cmd.Parameters.AddWithValue("@qty", txtQty.Text)
@@ -91,19 +98,24 @@ Public Class MainActivity
         con.Close()
         Return oId
     End Function
-    Public Function CheckData()
+    Private Function CheckData()
         Return 0
     End Function
 
-    Public Function GenerateInvoice(oId)
+    Private Function Calculations()
+        rate = Math.Round((txtRate.Text * 100) / 105, 2)
+        amount = Math.Round(txtQty.Text * rate, 2) ''Rate * Qty
+        taxable = Math.Round(txtLabour.Text + amount, 2) ''Labour + Rate * Qty
+        gst = Math.Round((taxable * 2.5) / 100, 2) ''(Labour + Rate * Qty) * 2.5 / 100
+        total = Math.Round(taxable + 2 * gst, 2)
+        fraction = FractionCalculate(total)
+        total += fraction
+        Return 0
+    End Function
+
+    Private Function GenerateInvoice(oId)
         Dim templatePath As String = Application.StartupPath & "/Template.docx"
 
-        Dim rate As Double = Math.Round((txtRate.Text * 100) / 105, 2)
-        Dim amount As Double = Math.Round(txtQty.Text * rate, 2) ''Rate * Qty
-        Dim taxable As Double = Math.Round(txtLabour.Text + amount, 2) ''Labour + Rate * Qty
-        Dim gst As Double = Math.Round((taxable * 2.5) / 100, 2) ''(Labour + Rate * Qty) * 2.5 / 100
-        total = Math.Round(taxable + 2 * gst, 2)
-        Dim fraction As Double = FractionCalculate(total)
 
         Using document = (DocX.Load(templatePath))
             '' Buyer's Details
@@ -141,7 +153,6 @@ Public Class MainActivity
 
             If fraction <> 0 Then
                 document.Bookmarks("round").SetText(fraction.ToString("F"))
-                total += fraction
             Else
                 document.Tables.First().RemoveRow(14)
             End If
@@ -166,7 +177,7 @@ Public Class MainActivity
         Return 0
     End Function
 
-    Public Function PrintInvoice(oId)
+    Private Function PrintInvoice(oId)
         Dim path As String = Application.StartupPath & "/Order " & oId & ".docx"
         Using doc As New Document(path)
             Using dialog As New PrintDialog()
@@ -185,7 +196,7 @@ Public Class MainActivity
         Return 0
     End Function
 
-    Public Function FractionCalculate(total)
+    Private Function FractionCalculate(total)
         Dim fraction As Double = total - Int(total)
         If fraction >= 0.5 Then
             fraction = 1 - fraction
@@ -198,6 +209,8 @@ Public Class MainActivity
     Private Sub MainActivity_Load(sender As Object, e As EventArgs) Handles Me.Load
         LoadOrders()
         LoadSuggestions()
+        LoadProducts()
+        inventorypanel.Hide()
         detailspanel.Hide()
     End Sub
     Private Function LoadSuggestions()
@@ -216,6 +229,21 @@ Public Class MainActivity
         txtBuyer.AutoCompleteCustomSource = suggestions
         Return 0
     End Function
+    Private Function LoadProducts()
+        query = "SELECT * FROM Products"
+        Using ds As New DataSet
+            Using da As New SqlDataAdapter(query, con)
+                da.Fill(ds)
+            End Using
+            selectProductList.DataSource = ds.Tables(0)
+            selectProductList.DisplayMember = "Productname"
+            selectProductList.ValueMember = "Id"
+            selectProduct.DataSource = ds.Tables(0)
+            selectProductList.DisplayMember = "Productname"
+        End Using
+        Return 0
+    End Function
+
     Private Function LoadOrders()
         dataDetails.AlternatingRowsDefaultCellStyle = Nothing
         query = "SELECT Orders.Id, Name, City, Date, Total FROM Buyers, Orders WHERE BuyerId = Buyers.Id"
@@ -236,11 +264,11 @@ Public Class MainActivity
                     .FlatStyle = FlatStyle.Flat
                     .DefaultCellStyle.BackColor = Color.Black
                     .DefaultCellStyle.ForeColor = Color.White
-                    .AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                 End With
                 dataDetails.Columns.Add(viewdetails)
             End Using
         End If
+        dataDetails.Columns("Name").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
         dataDetails.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders
         dataDetails.Columns("Id").HeaderText = "Invoice"
         dataDetails.Columns("Total").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
@@ -258,25 +286,14 @@ Public Class MainActivity
         txtBuyer.Text = StrConv(txtBuyer.Text, vbProperCase)
     End Sub
 
-    Private Sub HoverEffect(sender As Object, e As EventArgs) Handles cmdminimize.MouseEnter, cmdclose.MouseEnter, cmdbilling.MouseEnter, cmdorder.MouseEnter
+    Private Sub HoverEffect(sender As Object, e As EventArgs) Handles cmdminimize.MouseEnter, cmdclose.MouseEnter, cmdbilling.MouseEnter, cmdorder.MouseEnter, cmdinventory.MouseEnter
         sender.ForeColor = Color.Black
         sender.BackColor = Color.White
     End Sub
 
-    Private Sub HoverEffectEnd(sender As Object, e As EventArgs) Handles cmdminimize.MouseLeave, cmdclose.MouseLeave, cmdbilling.MouseLeave, cmdorder.MouseLeave
+    Private Sub HoverEffectEnd(sender As Object, e As EventArgs) Handles cmdminimize.MouseLeave, cmdclose.MouseLeave, cmdbilling.MouseLeave, cmdorder.MouseLeave, cmdinventory.MouseLeave
         sender.ForeColor = Color.White
         sender.BackColor = Color.Black
-    End Sub
-
-    Private Sub Cmdbilling_Click(sender As Object, e As EventArgs) Handles cmdbilling.Click
-        billingpanel.Show()
-        detailspanel.Hide()
-    End Sub
-
-    Private Sub Cmdorder_Click(sender As Object, e As EventArgs) Handles cmdorder.Click
-        detailspanel.Show()
-        billingpanel.Hide()
-        LoadOrders()
     End Sub
 
     Private Sub DataDetails_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dataDetails.CellContentClick
@@ -322,15 +339,20 @@ Public Class MainActivity
                                 dateDate.Value = dr.Item("Date")
                                 GenerateInvoice(oId)
                             ElseIf result = DialogResult.No Then
-                                Using cmd As New SqlCommand("DELETE FROM Orders WHERE Id = @oid", con)
-                                    cmd.Parameters.AddWithValue("@oid", oId)
-                                    cmd.ExecuteNonQuery()
-                                End Using
-                                Using cmd As New SqlCommand("SELECT COUNT(*) FROM Orders WHERE Buyerid = @buyerid", con)
-                                    cmd.Parameters.AddWithValue("@buyersid", dr.Item("BuyerId"))
-                                    If cmd.ExecuteScalar() = 0 Then
-                                        Using cmd2 As New SqlCommand("DELETE FROM Buyers WHERE Id = @buyersid", con)
-                                            cmd2.Parameters.AddWithValue("@buyersid", dr.Item("Buyerid"))
+                                Using confirm As New CustomDialog("Confirmation", "Are you sure You want to delete?", "Yes, I'm sure", "No")
+                                    Dim confirmation = confirm.ShowDialog
+                                    If confirmation = DialogResult.Yes Then
+                                        Using cmd As New SqlCommand("DELETE FROM Orders WHERE Id = @oid", con)
+                                            cmd.Parameters.AddWithValue("@oid", oId)
+                                            cmd.ExecuteNonQuery()
+                                        End Using
+                                        Using cmd As New SqlCommand("SELECT COUNT(*) FROM Orders WHERE Buyerid = @buyerid", con)
+                                            cmd.Parameters.AddWithValue("@buyersid", dr.Item("BuyerId"))
+                                            If cmd.ExecuteScalar() = 0 Then
+                                                Using cmd2 As New SqlCommand("DELETE FROM Buyers WHERE Id = @buyersid", con)
+                                                    cmd2.Parameters.AddWithValue("@buyersid", dr.Item("Buyerid"))
+                                                End Using
+                                            End If
                                         End Using
                                     End If
                                 End Using
@@ -342,5 +364,41 @@ Public Class MainActivity
             End Using
             con.Close()
         End If
+    End Sub
+
+    Private Sub Cmdadd_Click(sender As Object, e As EventArgs) Handles cmdadd.Click
+        If txtProductName.Text <> "" Then
+            query = "INSERT INTO Products VALUES(@productname)"
+            con.Open()
+            Using cmd As New SqlCommand(query, con)
+                cmd.Parameters.AddWithValue("@productname", txtProductName.Text)
+                cmd.ExecuteNonQuery()
+            End Using
+            con.Close()
+            LoadProducts()
+        End If
+    End Sub
+
+    Private Sub Cmddelete_Click(sender As Object, e As EventArgs) Handles cmddelete.Click
+        query = "DELETE FROM Products WHERE Id = @id"
+        con.Open()
+        Using cmd As New SqlCommand(query, con)
+            cmd.Parameters.AddWithValue("@id", selectProductList.SelectedValue)
+            cmd.ExecuteNonQuery()
+        End Using
+        con.Close()
+        LoadProducts()
+    End Sub
+
+    Private Sub NavigationPanel(sender As Object, e As EventArgs) Handles cmdinventory.Click, cmdbilling.Click, cmdorder.Click
+        For Each control In Me.Controls
+            If control.name <> "navpanel" Then
+                If TypeOf control Is Panel And control.name Is CType(sender, Label).Tag Then
+                    control.Show()
+                Else
+                    control.Hide()
+                End If
+            End If
+        Next
     End Sub
 End Class
