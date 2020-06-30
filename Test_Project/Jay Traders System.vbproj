@@ -83,11 +83,11 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="Xceed.Document.NET, Version=1.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\DocX.1.6.0\lib\net40\Xceed.Document.NET.dll</HintPath>
+    <Reference Include="Xceed.Document.NET, Version=1.7.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocX.1.7.0\lib\net40\Xceed.Document.NET.dll</HintPath>
     </Reference>
-    <Reference Include="Xceed.Words.NET, Version=1.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\DocX.1.6.0\lib\net40\Xceed.Words.NET.dll</HintPath>
+    <Reference Include="Xceed.Words.NET, Version=1.7.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocX.1.7.0\lib\net40\Xceed.Words.NET.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -109,16 +109,6 @@
     </Compile>
     <Compile Include="CustomDialog.vb">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="JTBASEDataSet.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>JTBASEDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="JTBASEDataSet1.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>JTBASEDataSet1.xsd</DependentUpon>
     </Compile>
     <Compile Include="MainActivity.Designer.vb">
       <DependentUpon>MainActivity.vb</DependentUpon>
@@ -167,28 +157,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="JTBASEDataSet.xsc">
-      <DependentUpon>JTBASEDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="JTBASEDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>JTBASEDataSet.Designer.vb</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="JTBASEDataSet.xss">
-      <DependentUpon>JTBASEDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="JTBASEDataSet1.xsc">
-      <DependentUpon>JTBASEDataSet1.xsd</DependentUpon>
-    </None>
-    <None Include="JTBASEDataSet1.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>JTBASEDataSet1.Designer.vb</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="JTBASEDataSet1.xss">
-      <DependentUpon>JTBASEDataSet1.xsd</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Template.docx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

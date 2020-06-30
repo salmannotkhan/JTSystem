@@ -365,7 +365,6 @@ Public Class MainActivity
             End Using
             con.Close()
             document.Bookmarks("totalwords").SetText(NumeriCon.ConvertNum(Int(total)) & " Only") ''Automatic
-
             Dim path As String = Application.StartupPath & "\Order " & oId & ".docx"
             document.SaveAs(path)
             PdfConversion(path)
