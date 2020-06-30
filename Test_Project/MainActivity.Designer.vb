@@ -22,9 +22,9 @@ Partial Class MainActivity
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.navpanel = New System.Windows.Forms.Panel()
         Me.cmdorder = New System.Windows.Forms.Label()
         Me.cmdinventory = New System.Windows.Forms.Label()
@@ -44,7 +44,7 @@ Partial Class MainActivity
         Me.Label11 = New System.Windows.Forms.Label()
         Me.txtRate = New System.Windows.Forms.TextBox()
         Me.Label10 = New System.Windows.Forms.Label()
-        Me.txtQty = New System.Windows.Forms.TextBox()
+        Me.txtBags = New System.Windows.Forms.TextBox()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.txtHSN = New System.Windows.Forms.TextBox()
         Me.Label7 = New System.Windows.Forms.Label()
@@ -63,8 +63,11 @@ Partial Class MainActivity
         Me.detailspanel = New System.Windows.Forms.Panel()
         Me.dataDetails = New System.Windows.Forms.DataGridView()
         Me.inventorypanel = New System.Windows.Forms.Panel()
+        Me.txtNewInvoiceNo = New System.Windows.Forms.TextBox()
+        Me.cmdSetInvoiceNo = New System.Windows.Forms.Button()
+        Me.Label18 = New System.Windows.Forms.Label()
         Me.Label17 = New System.Windows.Forms.Label()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.txtNewProduct = New System.Windows.Forms.TextBox()
         Me.cmdrecieved = New System.Windows.Forms.Button()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.selectOrderId = New System.Windows.Forms.ComboBox()
@@ -74,9 +77,6 @@ Partial Class MainActivity
         Me.txtRecTotal = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.selectProductList = New System.Windows.Forms.ComboBox()
-        Me.txtNewInvoiceNo = New System.Windows.Forms.TextBox()
-        Me.cmdSetInvoiceNo = New System.Windows.Forms.Button()
-        Me.Label18 = New System.Windows.Forms.Label()
         Me.navpanel.SuspendLayout()
         Me.billingpanel.SuspendLayout()
         Me.detailspanel.SuspendLayout()
@@ -182,7 +182,7 @@ Partial Class MainActivity
         Me.billingpanel.Controls.Add(Me.Label11)
         Me.billingpanel.Controls.Add(Me.txtRate)
         Me.billingpanel.Controls.Add(Me.Label10)
-        Me.billingpanel.Controls.Add(Me.txtQty)
+        Me.billingpanel.Controls.Add(Me.txtBags)
         Me.billingpanel.Controls.Add(Me.Label8)
         Me.billingpanel.Controls.Add(Me.txtHSN)
         Me.billingpanel.Controls.Add(Me.Label7)
@@ -342,14 +342,14 @@ Partial Class MainActivity
         Me.Label10.TabIndex = 100
         Me.Label10.Text = "Rate:"
         '
-        'txtQty
+        'txtBags
         '
-        Me.txtQty.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtQty.Location = New System.Drawing.Point(563, 167)
-        Me.txtQty.Margin = New System.Windows.Forms.Padding(2)
-        Me.txtQty.Name = "txtQty"
-        Me.txtQty.Size = New System.Drawing.Size(91, 26)
-        Me.txtQty.TabIndex = 10
+        Me.txtBags.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtBags.Location = New System.Drawing.Point(563, 167)
+        Me.txtBags.Margin = New System.Windows.Forms.Padding(2)
+        Me.txtBags.Name = "txtBags"
+        Me.txtBags.Size = New System.Drawing.Size(91, 26)
+        Me.txtBags.TabIndex = 10
         '
         'Label8
         '
@@ -359,9 +359,9 @@ Partial Class MainActivity
         Me.Label8.Location = New System.Drawing.Point(432, 170)
         Me.Label8.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(81, 18)
+        Me.Label8.Size = New System.Drawing.Size(54, 18)
         Me.Label8.TabIndex = 98
-        Me.Label8.Text = "Quantity:"
+        Me.Label8.Text = "Bags:"
         '
         'txtHSN
         '
@@ -529,32 +529,32 @@ Partial Class MainActivity
         '
         Me.dataDetails.AllowUserToAddRows = False
         Me.dataDetails.AllowUserToDeleteRows = False
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Black
-        Me.dataDetails.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle7.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black
+        Me.dataDetails.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle7
         Me.dataDetails.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.dataDetails.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dataDetails.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle8.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle8.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dataDetails.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle8
         Me.dataDetails.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle6.Padding = New System.Windows.Forms.Padding(1, 5, 1, 5)
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dataDetails.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle9.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle9.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle9.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle9.Padding = New System.Windows.Forms.Padding(1, 5, 1, 5)
+        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dataDetails.DefaultCellStyle = DataGridViewCellStyle9
         Me.dataDetails.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dataDetails.Location = New System.Drawing.Point(0, 0)
         Me.dataDetails.Name = "dataDetails"
@@ -574,7 +574,7 @@ Partial Class MainActivity
         Me.inventorypanel.Controls.Add(Me.cmdSetInvoiceNo)
         Me.inventorypanel.Controls.Add(Me.Label18)
         Me.inventorypanel.Controls.Add(Me.Label17)
-        Me.inventorypanel.Controls.Add(Me.TextBox1)
+        Me.inventorypanel.Controls.Add(Me.txtNewProduct)
         Me.inventorypanel.Controls.Add(Me.cmdrecieved)
         Me.inventorypanel.Controls.Add(Me.Label16)
         Me.inventorypanel.Controls.Add(Me.selectOrderId)
@@ -591,6 +591,39 @@ Partial Class MainActivity
         Me.inventorypanel.Size = New System.Drawing.Size(800, 400)
         Me.inventorypanel.TabIndex = 3
         '
+        'txtNewInvoiceNo
+        '
+        Me.txtNewInvoiceNo.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtNewInvoiceNo.Location = New System.Drawing.Point(157, 294)
+        Me.txtNewInvoiceNo.Name = "txtNewInvoiceNo"
+        Me.txtNewInvoiceNo.Size = New System.Drawing.Size(127, 26)
+        Me.txtNewInvoiceNo.TabIndex = 13
+        '
+        'cmdSetInvoiceNo
+        '
+        Me.cmdSetInvoiceNo.AutoSize = True
+        Me.cmdSetInvoiceNo.BackColor = System.Drawing.Color.Black
+        Me.cmdSetInvoiceNo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.cmdSetInvoiceNo.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmdSetInvoiceNo.ForeColor = System.Drawing.Color.White
+        Me.cmdSetInvoiceNo.Location = New System.Drawing.Point(322, 290)
+        Me.cmdSetInvoiceNo.Name = "cmdSetInvoiceNo"
+        Me.cmdSetInvoiceNo.Padding = New System.Windows.Forms.Padding(2)
+        Me.cmdSetInvoiceNo.Size = New System.Drawing.Size(157, 34)
+        Me.cmdSetInvoiceNo.TabIndex = 12
+        Me.cmdSetInvoiceNo.Text = "Set Invoice No."
+        Me.cmdSetInvoiceNo.UseVisualStyleBackColor = False
+        '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label18.Location = New System.Drawing.Point(26, 297)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(102, 18)
+        Me.Label18.TabIndex = 11
+        Me.Label18.Text = "Invoice No.:"
+        '
         'Label17
         '
         Me.Label17.AutoSize = True
@@ -601,13 +634,13 @@ Partial Class MainActivity
         Me.Label17.TabIndex = 10
         Me.Label17.Text = "Order ID:"
         '
-        'TextBox1
+        'txtNewProduct
         '
-        Me.TextBox1.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox1.Location = New System.Drawing.Point(157, 27)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(127, 26)
-        Me.TextBox1.TabIndex = 9
+        Me.txtNewProduct.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtNewProduct.Location = New System.Drawing.Point(157, 27)
+        Me.txtNewProduct.Name = "txtNewProduct"
+        Me.txtNewProduct.Size = New System.Drawing.Size(159, 26)
+        Me.txtNewProduct.TabIndex = 9
         '
         'cmdrecieved
         '
@@ -670,7 +703,7 @@ Partial Class MainActivity
         Me.cmdadd.Location = New System.Drawing.Point(322, 23)
         Me.cmdadd.Name = "cmdadd"
         Me.cmdadd.Padding = New System.Windows.Forms.Padding(2)
-        Me.cmdadd.Size = New System.Drawing.Size(157, 34)
+        Me.cmdadd.Size = New System.Drawing.Size(156, 34)
         Me.cmdadd.TabIndex = 4
         Me.cmdadd.Text = "Add Product"
         Me.cmdadd.UseVisualStyleBackColor = False
@@ -710,42 +743,9 @@ Partial Class MainActivity
         Me.selectProductList.FormattingEnabled = True
         Me.selectProductList.Location = New System.Drawing.Point(157, 104)
         Me.selectProductList.Name = "selectProductList"
-        Me.selectProductList.Size = New System.Drawing.Size(127, 26)
+        Me.selectProductList.Size = New System.Drawing.Size(159, 26)
         Me.selectProductList.TabIndex = 0
         Me.selectProductList.ValueMember = "Id"
-        '
-        'txtNewInvoiceNo
-        '
-        Me.txtNewInvoiceNo.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtNewInvoiceNo.Location = New System.Drawing.Point(157, 294)
-        Me.txtNewInvoiceNo.Name = "txtNewInvoiceNo"
-        Me.txtNewInvoiceNo.Size = New System.Drawing.Size(127, 26)
-        Me.txtNewInvoiceNo.TabIndex = 13
-        '
-        'cmdSetInvoiceNo
-        '
-        Me.cmdSetInvoiceNo.AutoSize = True
-        Me.cmdSetInvoiceNo.BackColor = System.Drawing.Color.Black
-        Me.cmdSetInvoiceNo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.cmdSetInvoiceNo.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdSetInvoiceNo.ForeColor = System.Drawing.Color.White
-        Me.cmdSetInvoiceNo.Location = New System.Drawing.Point(322, 290)
-        Me.cmdSetInvoiceNo.Name = "cmdSetInvoiceNo"
-        Me.cmdSetInvoiceNo.Padding = New System.Windows.Forms.Padding(2)
-        Me.cmdSetInvoiceNo.Size = New System.Drawing.Size(157, 34)
-        Me.cmdSetInvoiceNo.TabIndex = 12
-        Me.cmdSetInvoiceNo.Text = "Set Invoice No."
-        Me.cmdSetInvoiceNo.UseVisualStyleBackColor = False
-        '
-        'Label18
-        '
-        Me.Label18.AutoSize = True
-        Me.Label18.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label18.Location = New System.Drawing.Point(26, 297)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(102, 18)
-        Me.Label18.TabIndex = 11
-        Me.Label18.Text = "Invoice No.:"
         '
         'MainActivity
         '
@@ -785,7 +785,7 @@ Partial Class MainActivity
     Friend WithEvents Label11 As Label
     Friend WithEvents txtRate As TextBox
     Friend WithEvents Label10 As Label
-    Friend WithEvents txtQty As TextBox
+    Friend WithEvents txtBags As TextBox
     Friend WithEvents Label8 As Label
     Friend WithEvents txtHSN As TextBox
     Friend WithEvents Label7 As Label
@@ -819,7 +819,7 @@ Partial Class MainActivity
     Friend WithEvents Label16 As Label
     Friend WithEvents selectOrderId As ComboBox
     Friend WithEvents Label17 As Label
-    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents txtNewProduct As TextBox
     Friend WithEvents txtNewInvoiceNo As TextBox
     Friend WithEvents cmdSetInvoiceNo As Button
     Friend WithEvents Label18 As Label

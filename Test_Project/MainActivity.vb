@@ -1,6 +1,7 @@
 ﻿Imports System.Runtime.InteropServices
 Imports System.Data.SqlClient
 Imports Xceed.Words.NET
+Imports System.Text.RegularExpressions
 
 Public Class MainActivity
     ReadOnly con As New SqlConnection("Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Salman Shaikh\source\repos\Test_Project\Test_Project\JTBASE.mdf;Integrated Security=True;Connect Timeout=30")
@@ -8,6 +9,7 @@ Public Class MainActivity
     ReadOnly dsBuyers As New DataSet
     Dim query As String
     Dim total As Double
+    Dim quant As Integer
     Dim rate As Double
     Dim amount As Double
     Dim taxable As Double
@@ -50,7 +52,6 @@ Public Class MainActivity
             bId = cmd.ExecuteScalar
         End Using
         con.Close()
-        MsgBox(bId)
         If bId = 0 Then
             bId = InsertBuyersDetails()
         End If
@@ -104,7 +105,7 @@ Public Class MainActivity
                     Dim dr As DataRow = dt.Rows(0)
                     If Not dr.IsNull(0) Then
                         Dim desc As String = String.Join(
-                            Environment.NewLine,
+                        Environment.NewLine,
                             "Invoice No.: " & oId,
                             "M/S: " & dr.Item("Name"),
                             "Address: " & dr.Item("Address"),
@@ -127,7 +128,7 @@ Public Class MainActivity
                                 txtLabour.Text = dr.Item("Labor")
                                 txtMobile.Text = dr.Item("Mobile")
                                 txtPlace.Text = dr.Item("State")
-                                txtQty.Text = dr.Item("Qty")
+                                txtBags.Text = dr.Item("Qty")
                                 txtRate.Text = dr.Item("Rate")
                                 txtTransporter.Text = dr.Item("Transporter")
                                 dateDate.Value = dr.Item("Date")
@@ -157,11 +158,11 @@ Public Class MainActivity
 
 
     Private Sub Cmdadd_Click(sender As Object, e As EventArgs) Handles cmdadd.Click
-        If txtRecTotal.Text <> "" Then
+        If txtNewProduct.Text <> "" Then
             query = "INSERT INTO Products VALUES(@productname)"
             con.Open()
             Using cmd As New SqlCommand(query, con)
-                cmd.Parameters.AddWithValue("@productname", txtRecTotal.Text)
+                cmd.Parameters.AddWithValue("@productname", txtNewProduct.Text)
                 cmd.ExecuteNonQuery()
             End Using
             con.Close()
@@ -262,7 +263,7 @@ Public Class MainActivity
             cmd.Parameters.AddWithValue("@productname", selectProduct.Text)
             cmd.Parameters.AddWithValue("@hsn", txtHSN.Text)
             cmd.Parameters.AddWithValue("@rate", txtRate.Text)
-            cmd.Parameters.AddWithValue("@qty", txtQty.Text)
+            cmd.Parameters.AddWithValue("@qty", txtBags.Text)
             cmd.Parameters.AddWithValue("@labor", txtLabour.Text)
             cmd.Parameters.AddWithValue("@total", total)
             cmd.Parameters.AddWithValue("@transporter", txtTransporter.Text)
@@ -277,8 +278,9 @@ Public Class MainActivity
     End Function
 
     Private Function Calculations()
+        quant = New Regex("\d+(?=[k|K][g|G])").Match(selectProduct.Text).Value
         rate = Math.Round((txtRate.Text * 100) / 105, 2)
-        amount = Math.Round(txtQty.Text * rate, 2) ''Rate * Qty
+        amount = Math.Round(quant * rate, 2) ''Rate * Qty
         taxable = Math.Round(txtLabour.Text + amount, 2) ''Labour + Rate * Qty
         gst = Math.Round((taxable * 2.5) / 100, 2) ''(Labour + Rate * Qty) * 2.5 / 100
         total = Math.Round(taxable + 2 * gst, 2)
@@ -289,6 +291,7 @@ Public Class MainActivity
 
     Private Function GenerateInvoice(oId)
         Using document = DocX.Load(Application.StartupPath & "/Template.docx")
+
             '' Buyer's Details
             document.Bookmarks("buyer").SetText(txtBuyer.Text) ''Input Type: Text
             document.Bookmarks("address").SetText(txtAddress.Text) ''Input Type: Text
@@ -305,8 +308,8 @@ Public Class MainActivity
             document.Bookmarks("no").SetText("1") ''Automatic
             document.Bookmarks("productname").SetText(selectProduct.Text) ''Input Type: Selection
             document.Bookmarks("hsn").SetText(txtHSN.Text) ''Input
-            document.Bookmarks("bags").SetText("") ''Input
-            document.Bookmarks("qty").SetText(txtQty.Text) ''Automatic
+            document.Bookmarks("bags").SetText(txtBags.Text) ''Input
+            document.Bookmarks("qty").SetText(quant * Val(txtBags.Text)) ''Automatic
 
             document.Bookmarks("net").SetText(Math.Round(Val(txtRate.Text), 2).ToString("F")) ''Input Probably Automatic
             document.Bookmarks("rate").SetText(rate.ToString("F")) ''Input
@@ -323,7 +326,11 @@ Public Class MainActivity
             document.Bookmarks("sgst").SetText(gst.ToString("F"))
 
             If fraction <> 0 Then
-                document.Bookmarks("round").SetText(fraction.ToString("F"))
+                If fraction > 0 Then
+                    document.Bookmarks("round").SetText("+" & fraction.ToString("F"))
+                Else
+                    document.Bookmarks("round").SetText(fraction.ToString("F"))
+                End If
             Else
                 document.Tables.First().RemoveRow(14)
             End If
@@ -346,7 +353,7 @@ Public Class MainActivity
                     Dim dues As String = ""
                     While dr.Read
                         invoices &= dr.Item("Id") & vbNewLine
-                        dates &= dr.Item("Date") & vbNewLine
+                        dates &= Format(dr.Item("Date"), "dd-MM-yyyy") & vbNewLine
                         amounts &= dr.Item("Remaining") & vbNewLine
                         dues &= (dr.Item("Days") + 1) & vbNewLine
                     End While
@@ -359,7 +366,7 @@ Public Class MainActivity
             con.Close()
             document.Bookmarks("totalwords").SetText(NumeriCon.ConvertNum(Int(total)) & " Only") ''Automatic
 
-            Dim path As String = Application.StartupPath & "/Order " & oId & ".docx"
+            Dim path As String = Application.StartupPath & "\Order " & oId & ".docx"
             document.SaveAs(path)
             PdfConversion(path)
             My.Computer.FileSystem.DeleteFile(path)
@@ -368,7 +375,7 @@ Public Class MainActivity
     End Function
 
     Private Function PdfConversion(path)
-        Using doc As New Spire.Doc.Document(Str(path))
+        Using doc As New Spire.Doc.Document(path.ToString)
             Using confirm As New CustomDialog("Confirmation", "Do you want to print invoice?", "Print", "Save")
                 Dim result = confirm.ShowDialog
                 If result = Windows.Forms.DialogResult.Yes Then
@@ -385,7 +392,16 @@ Public Class MainActivity
                         End Try
                     End Using
                 Else
-                    doc.SaveToFile("sample.pdf", Spire.Doc.FileFormat.PDF)
+                    Using savebox As New SaveFileDialog
+                        savebox.Filter = "Pdf Document|*.pdf"
+                        savebox.Title = "Save Invoice Copy"
+                        savebox.RestoreDirectory = True
+                        If savebox.ShowDialog = DialogResult.OK Then
+                            Dim savepath As String = savebox.FileName
+                            MsgBox(savepath)
+                            doc.SaveToFile(savepath, Spire.Doc.FileFormat.PDF)
+                        End If
+                    End Using
                 End If
             End Using
         End Using
