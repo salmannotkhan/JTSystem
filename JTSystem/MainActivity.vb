@@ -170,7 +170,7 @@ Public Class MainActivity
     End Sub
 
 
-    Private Sub Cmdadd_Click(sender As Object, e As EventArgs) Handles cmdadd.Click
+    Private Sub Cmdadd_Click(sender As Object, e As EventArgs)
         If txtNewProduct.Text <> "" Then
             query = "INSERT INTO Products VALUES(@productname)"
             con.Open()
@@ -183,7 +183,7 @@ Public Class MainActivity
         End If
     End Sub
 
-    Private Sub Cmddelete_Click(sender As Object, e As EventArgs) Handles cmddelete.Click
+    Private Sub Cmddelete_Click(sender As Object, e As EventArgs)
         query = "DELETE FROM Products WHERE Id = @id"
         con.Open()
         Using cmd As New SqlCommand(query, con)
@@ -212,7 +212,7 @@ Public Class MainActivity
         Next
     End Sub
 
-    Private Sub Cmdrecieved_Click(sender As Object, e As EventArgs) Handles cmdrecieved.Click
+    Private Sub Cmdrecieved_Click(sender As Object, e As EventArgs)
         query = "SELECT Total from Orders WHERE Id = @id"
         con.Open()
         Using cmd As New SqlCommand(query, con)
@@ -231,30 +231,29 @@ Public Class MainActivity
         con.Close()
     End Sub
 
-    Private Sub CmdSetInvoiceNo_Click(sender As Object, e As EventArgs) Handles cmdSetInvoiceNo.Click
-        If Not IsNumeric(txtNewInvoiceNo.Text) Then
-            MsgBox("Please enter valid value")
-        Else
-            query = "SELECT MAX(Id) FROM Orders"
-            con.Open()
-            Using cmd As New SqlCommand(query, con)
-                If Val(txtNewInvoiceNo.Text) < cmd.ExecuteScalar Then
-                Else
-                    Using confirm As New CustomDialog("Confirmation", "Are you sure you want to set it?", "Yes, I'm Sure", "No")
-                        Dim result = confirm.ShowDialog
-                        If result = DialogResult.Yes Then
-                            query = "DBCC CHECKIDENT('Orders', RESEED, @number)"
-                            Using cmd2 As New SqlCommand(query, con)
-                                cmd2.Parameters.AddWithValue("@number", "")
-                                cmd2.ExecuteNonQuery()
-                            End Using
-                        End If
-                    End Using
-                End If
-            End Using
-            con.Close()
-        End If
-    End Sub
+    Private Function ResetApplication(ByVal passcode As String)
+        con.Open()
+
+        'Deleted all data in tables
+        query = "DELETE FROM Buyers; DELETE FROM Orders; DELETE FROM Products;"
+        Using cmd As New SqlCommand(query, con)
+            cmd.ExecuteNonQuery()
+        End Using
+
+        'Reset Idnentity Index
+        query = "DBCC CHECKIDENT('Orders', RESEED, 100)"
+        Using cmd As New SqlCommand(query, con)
+            cmd.ExecuteNonQuery()
+        End Using
+
+        query = "DBCC CHECKIDENT('Buyers', RESEED, 1)"
+        Using cmd As New SqlCommand(query, con)
+            cmd.ExecuteNonQuery()
+        End Using
+
+        con.Close()
+        Return 0
+    End Function
 
     Public Function InsertBuyersDetails()
         con.Open()
@@ -485,10 +484,11 @@ Public Class MainActivity
                 da.Fill(ds)
                 dataDetails.DataSource = ds.Tables(0)
                 dataDetails.Columns("PaidTotal").Visible = False
-                Dim dc As DataRow() = ds.Tables(0).Select("Total - PaidTotal > 0")
-                selectOrderId.DataSource = dc.CopyToDataTable
-                selectOrderId.DisplayMember = "Id"
-                dataDetails.Refresh()
+                If ds.Tables(0).Rows.Count > 0 Then
+                    Dim dc As DataRow() = ds.Tables(0).Select("Total - PaidTotal > 0")
+                    selectOrderId.DataSource = dc.CopyToDataTable
+                    selectOrderId.DisplayMember = "Id"
+                End If
             End Using
         End Using
         If dataDetails.Columns("View Details") Is Nothing Then
