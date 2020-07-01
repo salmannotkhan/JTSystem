@@ -65,6 +65,8 @@ Public Class MainActivity
         LoadOrders()
         LoadSuggestions()
         LoadProducts()
+        cmdbilling.ForeColor = Color.Black
+        cmdbilling.BackColor = Color.White
         inventorypanel.Hide()
         detailspanel.Hide()
     End Sub
@@ -86,8 +88,18 @@ Public Class MainActivity
     End Sub
 
     Private Sub HoverEffectEnd(sender As Object, e As EventArgs) Handles cmdminimize.MouseLeave, cmdclose.MouseLeave, cmdbilling.MouseLeave, cmdorder.MouseLeave, cmdinventory.MouseLeave
-        sender.ForeColor = Color.White
-        sender.BackColor = Color.Black
+        For Each control In Me.Controls.OfType(Of Panel)
+            If control.Name <> "navpanel" Then
+                If Not control.Visible And control.Name Is CType(sender, Label).Tag Then
+                    sender.ForeColor = Color.White
+                    sender.BackColor = Color.Black
+                End If
+            End If
+        Next
+        If sender.Tag = "" Then
+            sender.ForeColor = Color.White
+            sender.BackColor = Color.Black
+        End If
     End Sub
 
     Private Sub DataDetails_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dataDetails.CellContentClick
@@ -183,13 +195,19 @@ Public Class MainActivity
     End Sub
 
     Private Sub NavigationPanel(sender As Object, e As EventArgs) Handles cmdinventory.Click, cmdbilling.Click, cmdorder.Click
-        For Each control In Me.Controls
-            If control.name <> "navpanel" Then
-                If TypeOf control Is Panel And control.name Is CType(sender, Label).Tag Then
-                    control.Show()
+        For Each control In Me.Controls.OfType(Of Panel)
+            If control.Name <> "navpanel" Then
+                If TypeOf control Is Panel And control.Name Is CType(sender, Label).Tag Then
+                    control.Visible = True
                 Else
-                    control.Hide()
+                    control.Visible = False
                 End If
+            End If
+        Next
+        For Each btn In navpanel.Controls.OfType(Of Label)
+            If Not btn Is sender Then
+                btn.ForeColor = Color.White
+                btn.BackColor = Color.Black
             End If
         Next
     End Sub

@@ -133,7 +133,7 @@ Partial Class MainActivity
         Me.cmdminimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cmdminimize.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdminimize.ForeColor = System.Drawing.Color.White
-        Me.cmdminimize.Location = New System.Drawing.Point(639, 8)
+        Me.cmdminimize.Location = New System.Drawing.Point(628, 8)
         Me.cmdminimize.Name = "cmdminimize"
         Me.cmdminimize.Padding = New System.Windows.Forms.Padding(5)
         Me.cmdminimize.Size = New System.Drawing.Size(87, 30)
@@ -148,7 +148,7 @@ Partial Class MainActivity
         Me.cmdclose.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cmdclose.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdclose.ForeColor = System.Drawing.Color.White
-        Me.cmdclose.Location = New System.Drawing.Point(732, 8)
+        Me.cmdclose.Location = New System.Drawing.Point(721, 8)
         Me.cmdclose.Name = "cmdclose"
         Me.cmdclose.Padding = New System.Windows.Forms.Padding(5)
         Me.cmdclose.Size = New System.Drawing.Size(65, 30)
