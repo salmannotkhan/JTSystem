@@ -18,7 +18,6 @@ Public Class CustomDialog
     End Sub
     Public Sub New(ByVal title As String, ByVal desc As String, ByVal confirm As String, ByVal abort As String)
         InitializeComponent()
-
         lbltitle.Text = title
         lbldescription.Text = desc
         cmdconfirm.Text = confirm

@@ -4,7 +4,7 @@ Imports Xceed.Words.NET
 Imports System.Text.RegularExpressions
 
 Public Class MainActivity
-    ReadOnly con As New SqlConnection("Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Salman Shaikh\source\repos\Test_Project\Test_Project\JTBASE.mdf;Integrated Security=True;Connect Timeout=30")
+    ReadOnly con As New SqlConnection("Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Salman Shaikh\source\repos\JTSystem\JTSystem\JTBASE.mdf;Integrated Security=True;Connect Timeout=30")
     'ReadOnly con As New SqlConnection("Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" & Application.StartupPath & "\JTBASE.mdf;Integrated Security=True;Connect Timeout=30")
     ReadOnly dsBuyers As New DataSet
     Dim query As String
@@ -132,6 +132,7 @@ Public Class MainActivity
                                 txtRate.Text = dr.Item("Rate")
                                 txtTransporter.Text = dr.Item("Transporter")
                                 dateDate.Value = dr.Item("Date")
+                                con.Close()
                                 GenerateInvoice(oId)
                             ElseIf result = DialogResult.No Then
                                 Using cmd As New SqlCommand("DELETE FROM Orders WHERE Id = @oid", con)
@@ -217,6 +218,7 @@ Public Class MainActivity
             MsgBox("Please enter valid value")
         Else
             query = "SELECT MAX(Id) FROM Orders"
+            con.Open()
             Using cmd As New SqlCommand(query, con)
                 If Val(txtNewInvoiceNo.Text) < cmd.ExecuteScalar Then
                 Else
@@ -232,6 +234,7 @@ Public Class MainActivity
                     End Using
                 End If
             End Using
+            con.Close()
         End If
     End Sub
 
@@ -339,9 +342,6 @@ Public Class MainActivity
 
             '' Past Billings of Buyer
             query = "SELECT Id, Date, Total - PaidTotal Remaining, DATEDIFF(day, Date, @date) Days FROM Orders WHERE Total - PaidTotal > 0 AND BuyerId = (SELECT BuyerId FROM Orders WHERE Id = @id) AND Date <= @date"
-            If con.State Then
-                con.Close()
-            End If
             con.Open()
             Using cmd As New SqlCommand(query, con)
                 cmd.Parameters.AddWithValue("@id", oId)
@@ -427,6 +427,7 @@ Public Class MainActivity
         Next
         Return 0
     End Function
+
     Private Function LoadSuggestions()
         Dim suggestions As New AutoCompleteStringCollection()
 
@@ -460,12 +461,14 @@ Public Class MainActivity
 
     Private Function LoadOrders()
         dataDetails.AlternatingRowsDefaultCellStyle = Nothing
-        query = "SELECT Orders.Id, Name, City, Date, Total FROM Buyers, Orders WHERE BuyerId = Buyers.Id"
+        query = "SELECT Orders.Id, Name, City, Date, Total, PaidTotal FROM Buyers, Orders WHERE BuyerId = Buyers.Id"
         Using da As New SqlDataAdapter(query, con)
             Using ds As New DataSet
                 da.Fill(ds)
                 dataDetails.DataSource = ds.Tables(0)
-                selectOrderId.DataSource = ds.Tables(0)
+                dataDetails.Columns("PaidTotal").Visible = False
+                Dim dc As DataRow() = ds.Tables(0).Select("Total - PaidTotal > 0")
+                selectOrderId.DataSource = dc.CopyToDataTable
                 selectOrderId.DisplayMember = "Id"
                 dataDetails.Refresh()
             End Using
@@ -478,8 +481,6 @@ Public Class MainActivity
                     .Text = "View"
                     .UseColumnTextForButtonValue = True
                     .FlatStyle = FlatStyle.Flat
-                    .DefaultCellStyle.BackColor = Color.Black
-                    .DefaultCellStyle.ForeColor = Color.White
                 End With
                 dataDetails.Columns.Add(viewdetails)
             End Using

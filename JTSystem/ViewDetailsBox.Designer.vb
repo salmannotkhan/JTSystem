@@ -25,21 +25,24 @@ Partial Class ViewDetailsBox
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.cmdclose = New System.Windows.Forms.Label()
         Me.title = New System.Windows.Forms.Label()
+        Me.Panel2 = New System.Windows.Forms.Panel()
         Me.cmddelete = New System.Windows.Forms.Button()
         Me.lbldescription = New System.Windows.Forms.Label()
         Me.cmdprint = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
+        Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.Black
+        Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Panel1.Controls.Add(Me.cmdclose)
         Me.Panel1.Controls.Add(Me.title)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(397, 50)
+        Me.Panel1.Size = New System.Drawing.Size(400, 50)
         Me.Panel1.TabIndex = 5
         '
         'cmdclose
@@ -69,16 +72,28 @@ Partial Class ViewDetailsBox
         Me.title.TabIndex = 1
         Me.title.Text = "View Details"
         '
+        'Panel2
+        '
+        Me.Panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel2.Controls.Add(Me.cmddelete)
+        Me.Panel2.Controls.Add(Me.lbldescription)
+        Me.Panel2.Controls.Add(Me.cmdprint)
+        Me.Panel2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Panel2.Location = New System.Drawing.Point(0, 50)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(400, 350)
+        Me.Panel2.TabIndex = 6
+        '
         'cmddelete
         '
         Me.cmddelete.BackColor = System.Drawing.Color.White
         Me.cmddelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cmddelete.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmddelete.ForeColor = System.Drawing.Color.Black
-        Me.cmddelete.Location = New System.Drawing.Point(272, 399)
+        Me.cmddelete.Location = New System.Drawing.Point(215, 300)
         Me.cmddelete.Name = "cmddelete"
-        Me.cmddelete.Size = New System.Drawing.Size(113, 39)
-        Me.cmddelete.TabIndex = 8
+        Me.cmddelete.Size = New System.Drawing.Size(113, 40)
+        Me.cmddelete.TabIndex = 11
         Me.cmddelete.Text = "Delete"
         Me.cmddelete.UseVisualStyleBackColor = False
         '
@@ -86,10 +101,10 @@ Partial Class ViewDetailsBox
         '
         Me.lbldescription.AutoSize = True
         Me.lbldescription.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbldescription.Location = New System.Drawing.Point(12, 75)
+        Me.lbldescription.Location = New System.Drawing.Point(70, 28)
         Me.lbldescription.Name = "lbldescription"
         Me.lbldescription.Size = New System.Drawing.Size(237, 18)
-        Me.lbldescription.TabIndex = 7
+        Me.lbldescription.TabIndex = 10
         Me.lbldescription.Text = "Do you want to print invoice?"
         '
         'cmdprint
@@ -98,10 +113,10 @@ Partial Class ViewDetailsBox
         Me.cmdprint.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cmdprint.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdprint.ForeColor = System.Drawing.Color.White
-        Me.cmdprint.Location = New System.Drawing.Point(15, 399)
+        Me.cmdprint.Location = New System.Drawing.Point(70, 300)
         Me.cmdprint.Name = "cmdprint"
-        Me.cmdprint.Size = New System.Drawing.Size(128, 39)
-        Me.cmdprint.TabIndex = 6
+        Me.cmdprint.Size = New System.Drawing.Size(128, 40)
+        Me.cmdprint.TabIndex = 9
         Me.cmdprint.Text = "Print Invoice"
         Me.cmdprint.UseVisualStyleBackColor = False
         '
@@ -109,26 +124,28 @@ Partial Class ViewDetailsBox
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(397, 450)
+        Me.BackColor = System.Drawing.Color.White
+        Me.ClientSize = New System.Drawing.Size(400, 400)
+        Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.Panel1)
-        Me.Controls.Add(Me.cmddelete)
-        Me.Controls.Add(Me.lbldescription)
-        Me.Controls.Add(Me.cmdprint)
+        Me.ForeColor = System.Drawing.Color.Black
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "ViewDetailsBox"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "ViewDetailsBox"
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.Panel2.ResumeLayout(False)
+        Me.Panel2.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
 
     Friend WithEvents Panel1 As Panel
+    Friend WithEvents title As Label
+    Friend WithEvents cmdclose As Label
+    Friend WithEvents Panel2 As Panel
     Friend WithEvents cmddelete As Button
     Friend WithEvents lbldescription As Label
     Friend WithEvents cmdprint As Button
-    Friend WithEvents title As Label
-    Friend WithEvents cmdclose As Label
 End Class

@@ -22,9 +22,9 @@ Partial Class MainActivity
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.navpanel = New System.Windows.Forms.Panel()
         Me.cmdorder = New System.Windows.Forms.Label()
         Me.cmdinventory = New System.Windows.Forms.Label()
@@ -87,6 +87,7 @@ Partial Class MainActivity
         'navpanel
         '
         Me.navpanel.BackColor = System.Drawing.Color.Black
+        Me.navpanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.navpanel.Controls.Add(Me.cmdorder)
         Me.navpanel.Controls.Add(Me.cmdinventory)
         Me.navpanel.Controls.Add(Me.cmdminimize)
@@ -95,7 +96,7 @@ Partial Class MainActivity
         Me.navpanel.Dock = System.Windows.Forms.DockStyle.Top
         Me.navpanel.Location = New System.Drawing.Point(0, 0)
         Me.navpanel.Name = "navpanel"
-        Me.navpanel.Size = New System.Drawing.Size(800, 50)
+        Me.navpanel.Size = New System.Drawing.Size(800, 45)
         Me.navpanel.TabIndex = 0
         '
         'cmdorder
@@ -103,7 +104,7 @@ Partial Class MainActivity
         Me.cmdorder.AutoSize = True
         Me.cmdorder.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdorder.ForeColor = System.Drawing.Color.White
-        Me.cmdorder.Location = New System.Drawing.Point(94, 9)
+        Me.cmdorder.Location = New System.Drawing.Point(94, 3)
         Me.cmdorder.Name = "cmdorder"
         Me.cmdorder.Padding = New System.Windows.Forms.Padding(10)
         Me.cmdorder.Size = New System.Drawing.Size(126, 38)
@@ -116,7 +117,7 @@ Partial Class MainActivity
         Me.cmdinventory.AutoSize = True
         Me.cmdinventory.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdinventory.ForeColor = System.Drawing.Color.White
-        Me.cmdinventory.Location = New System.Drawing.Point(226, 9)
+        Me.cmdinventory.Location = New System.Drawing.Point(226, 3)
         Me.cmdinventory.Name = "cmdinventory"
         Me.cmdinventory.Padding = New System.Windows.Forms.Padding(10)
         Me.cmdinventory.Size = New System.Drawing.Size(104, 38)
@@ -132,7 +133,7 @@ Partial Class MainActivity
         Me.cmdminimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cmdminimize.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdminimize.ForeColor = System.Drawing.Color.White
-        Me.cmdminimize.Location = New System.Drawing.Point(639, 14)
+        Me.cmdminimize.Location = New System.Drawing.Point(639, 8)
         Me.cmdminimize.Name = "cmdminimize"
         Me.cmdminimize.Padding = New System.Windows.Forms.Padding(5)
         Me.cmdminimize.Size = New System.Drawing.Size(87, 30)
@@ -147,7 +148,7 @@ Partial Class MainActivity
         Me.cmdclose.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cmdclose.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdclose.ForeColor = System.Drawing.Color.White
-        Me.cmdclose.Location = New System.Drawing.Point(732, 14)
+        Me.cmdclose.Location = New System.Drawing.Point(732, 8)
         Me.cmdclose.Name = "cmdclose"
         Me.cmdclose.Padding = New System.Windows.Forms.Padding(5)
         Me.cmdclose.Size = New System.Drawing.Size(65, 30)
@@ -159,7 +160,7 @@ Partial Class MainActivity
         Me.cmdbilling.AutoSize = True
         Me.cmdbilling.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdbilling.ForeColor = System.Drawing.Color.White
-        Me.cmdbilling.Location = New System.Drawing.Point(12, 9)
+        Me.cmdbilling.Location = New System.Drawing.Point(12, 3)
         Me.cmdbilling.Name = "cmdbilling"
         Me.cmdbilling.Padding = New System.Windows.Forms.Padding(10)
         Me.cmdbilling.Size = New System.Drawing.Size(76, 38)
@@ -170,6 +171,7 @@ Partial Class MainActivity
         'billingpanel
         '
         Me.billingpanel.BackColor = System.Drawing.Color.White
+        Me.billingpanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.billingpanel.Controls.Add(Me.Label9)
         Me.billingpanel.Controls.Add(Me.selectProduct)
         Me.billingpanel.Controls.Add(Me.dateDate)
@@ -200,9 +202,9 @@ Partial Class MainActivity
         Me.billingpanel.Controls.Add(Me.Label15)
         Me.billingpanel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.billingpanel.ForeColor = System.Drawing.Color.White
-        Me.billingpanel.Location = New System.Drawing.Point(0, 50)
+        Me.billingpanel.Location = New System.Drawing.Point(0, 45)
         Me.billingpanel.Name = "billingpanel"
-        Me.billingpanel.Size = New System.Drawing.Size(800, 400)
+        Me.billingpanel.Size = New System.Drawing.Size(800, 405)
         Me.billingpanel.TabIndex = 1
         '
         'Label9
@@ -518,45 +520,56 @@ Partial Class MainActivity
         '
         'detailspanel
         '
+        Me.detailspanel.BackColor = System.Drawing.Color.White
+        Me.detailspanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.detailspanel.Controls.Add(Me.dataDetails)
         Me.detailspanel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.detailspanel.Location = New System.Drawing.Point(0, 50)
+        Me.detailspanel.ForeColor = System.Drawing.Color.Black
+        Me.detailspanel.Location = New System.Drawing.Point(0, 45)
         Me.detailspanel.Name = "detailspanel"
-        Me.detailspanel.Size = New System.Drawing.Size(800, 400)
+        Me.detailspanel.Size = New System.Drawing.Size(800, 405)
         Me.detailspanel.TabIndex = 2
         '
         'dataDetails
         '
         Me.dataDetails.AllowUserToAddRows = False
         Me.dataDetails.AllowUserToDeleteRows = False
-        DataGridViewCellStyle7.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle7.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black
-        Me.dataDetails.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle7
+        Me.dataDetails.AllowUserToResizeColumns = False
+        Me.dataDetails.AllowUserToResizeRows = False
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black
+        Me.dataDetails.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dataDetails.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.dataDetails.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle8.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle8.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dataDetails.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle8
+        Me.dataDetails.BackgroundColor = System.Drawing.Color.White
+        Me.dataDetails.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.dataDetails.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
+        Me.dataDetails.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dataDetails.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.dataDetails.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle9.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle9.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle9.Padding = New System.Windows.Forms.Padding(1, 5, 1, 5)
-        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dataDetails.DefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle3.Padding = New System.Windows.Forms.Padding(1, 5, 1, 5)
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dataDetails.DefaultCellStyle = DataGridViewCellStyle3
         Me.dataDetails.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dataDetails.GridColor = System.Drawing.Color.White
         Me.dataDetails.Location = New System.Drawing.Point(0, 0)
+        Me.dataDetails.MultiSelect = False
         Me.dataDetails.Name = "dataDetails"
         Me.dataDetails.ReadOnly = True
         Me.dataDetails.RowHeadersVisible = False
@@ -564,12 +577,13 @@ Partial Class MainActivity
         Me.dataDetails.ShowCellToolTips = False
         Me.dataDetails.ShowEditingIcon = False
         Me.dataDetails.ShowRowErrors = False
-        Me.dataDetails.Size = New System.Drawing.Size(800, 400)
+        Me.dataDetails.Size = New System.Drawing.Size(798, 403)
         Me.dataDetails.TabIndex = 0
         '
         'inventorypanel
         '
         Me.inventorypanel.BackColor = System.Drawing.Color.White
+        Me.inventorypanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.inventorypanel.Controls.Add(Me.txtNewInvoiceNo)
         Me.inventorypanel.Controls.Add(Me.cmdSetInvoiceNo)
         Me.inventorypanel.Controls.Add(Me.Label18)
@@ -584,11 +598,11 @@ Partial Class MainActivity
         Me.inventorypanel.Controls.Add(Me.txtRecTotal)
         Me.inventorypanel.Controls.Add(Me.Label1)
         Me.inventorypanel.Controls.Add(Me.selectProductList)
-        Me.inventorypanel.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.inventorypanel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.inventorypanel.ForeColor = System.Drawing.Color.Black
-        Me.inventorypanel.Location = New System.Drawing.Point(0, 50)
+        Me.inventorypanel.Location = New System.Drawing.Point(0, 45)
         Me.inventorypanel.Name = "inventorypanel"
-        Me.inventorypanel.Size = New System.Drawing.Size(800, 400)
+        Me.inventorypanel.Size = New System.Drawing.Size(800, 405)
         Me.inventorypanel.TabIndex = 3
         '
         'txtNewInvoiceNo
@@ -670,6 +684,7 @@ Partial Class MainActivity
         'selectOrderId
         '
         Me.selectOrderId.DisplayMember = "Id"
+        Me.selectOrderId.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.selectOrderId.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.selectOrderId.FormattingEnabled = True
         Me.selectOrderId.Location = New System.Drawing.Point(157, 227)
@@ -739,6 +754,7 @@ Partial Class MainActivity
         'selectProductList
         '
         Me.selectProductList.DisplayMember = "Id"
+        Me.selectProductList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.selectProductList.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.selectProductList.FormattingEnabled = True
         Me.selectProductList.Location = New System.Drawing.Point(157, 104)

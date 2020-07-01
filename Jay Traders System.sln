@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29201.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Jay Traders System", "Test_Project\Jay Traders System.vbproj", "{CF2D3DE4-751A-4B6A-81E5-0453A085064A}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Jay Traders System", "JTSystem\Jay Traders System.vbproj", "{CF2D3DE4-751A-4B6A-81E5-0453A085064A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

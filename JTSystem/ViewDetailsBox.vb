@@ -17,13 +17,8 @@ Public Class ViewDetailsBox
         End If
     End Sub
     Public Sub New(ByVal desc As String)
-
-        ' This call is required by the designer.
         InitializeComponent()
-
-        ' Add any initialization after the InitializeComponent() call.
         lbldescription.Text = desc
-
     End Sub
 
     Private Sub Cmdclose_Click(sender As Object, e As EventArgs) Handles cmdclose.Click
