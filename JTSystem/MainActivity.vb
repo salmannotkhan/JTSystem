@@ -81,6 +81,9 @@ Public Class MainActivity
         End If
         txtBuyer.Text = StrConv(txtBuyer.Text, vbProperCase)
     End Sub
+    Private Sub Txt_LostFocus(sender As Object, e As EventArgs) Handles txtCity.LostFocus, txtAddress.LostFocus
+        sender.Text = StrConv(sender.Text, vbProperCase)
+    End Sub
 
     Private Sub HoverEffect(sender As Object, e As EventArgs) Handles cmdminimize.MouseEnter, cmdclose.MouseEnter, cmdbilling.MouseEnter, cmdorder.MouseEnter, cmdinventory.MouseEnter, cmdAbout.MouseLeave
         sender.ForeColor = Color.Black
@@ -368,7 +371,7 @@ Public Class MainActivity
                 If txtBuyer.Text <> "" Then
                     If txtCity.Text <> "" Then
                         If IsNumeric(txtMobile.Text) And (txtMobile.Text.Length = 10 Or txtMobile.Text.Length = 12) Then
-                            If txtGSTNo.Text <> "" And txtGSTNo.Text.Length <> 45 Then
+                            If txtGSTNo.Text <> "" And txtGSTNo.Text.Length = 15 Then
                                 If IsNumeric(txtHSN.Text) And txtHSN.Text <> "" Then
                                     If IsNumeric(txtBags.Text) And txtBags.Text <> "" Then
                                         If IsNumeric(txtRate.Text) And txtRate.Text <> "" Then
@@ -387,7 +390,7 @@ Public Class MainActivity
                                                     End If
                                                 End If
                                             Else
-                                                Using msg As New CustomMsgBox("Enter valid Invoice No.")
+                                                Using msg As New CustomMsgBox("Enter valid GST Rate")
                                                     msg.ShowDialog()
                                                 End Using
                                                 Return False
