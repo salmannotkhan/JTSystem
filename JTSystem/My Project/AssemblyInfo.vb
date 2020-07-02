@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("Test_Project")>
-<Assembly: AssemblyDescription("")>
+<Assembly: AssemblyTitle("JTSystem")>
+<Assembly: AssemblyDescription("Simple Billing Solution")>
 <Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("Test_Project")>
+<Assembly: AssemblyProduct("JTSystem")>
 <Assembly: AssemblyCopyright("Copyright ©  2020")>
 <Assembly: AssemblyTrademark("")>
 

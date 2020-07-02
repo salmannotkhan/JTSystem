@@ -4,8 +4,8 @@ Imports Xceed.Words.NET
 Imports System.Text.RegularExpressions
 
 Public Class MainActivity
-    ReadOnly con As New SqlConnection("Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Salman Shaikh\source\repos\JTSystem\JTSystem\JTBASE.mdf;Integrated Security=True;Connect Timeout=30")
-    'ReadOnly con As New SqlConnection("Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" & Application.StartupPath & "\JTBASE.mdf;Integrated Security=True;Connect Timeout=30")
+    'ReadOnly con As New SqlConnection("Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Salman Shaikh\source\repos\JTSystem\JTSystem\JTBASE.mdf;Integrated Security=True;Connect Timeout=30")
+    ReadOnly con As New SqlConnection("Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" & Application.StartupPath & "\JTBASE.mdf;Integrated Security=True;Connect Timeout=30")
     ReadOnly dsBuyers As New DataSet
     Dim query As String
     Dim total As Double
@@ -41,24 +41,24 @@ Public Class MainActivity
     End Sub
 
     Private Sub CmdGenerate_Click(sender As Object, e As EventArgs) Handles cmdGenerate.Click
-        If txtHSN.Text = "" Then txtHSN.Text = 0
-        If txtLabour.Text = "" Then txtLabour.Text = 0
-        Dim bId As Integer
-        con.Open()
-        query = "SELECT Id FROM Buyers WHERE Name = @name and City = @city"
-        Using cmd As New SqlCommand(query, con)
-            cmd.Parameters.AddWithValue("@name", txtBuyer.Text)
-            cmd.Parameters.AddWithValue("@city", txtCity.Text)
-            bId = cmd.ExecuteScalar
-        End Using
-        con.Close()
-        If bId = 0 Then
-            bId = InsertBuyersDetails()
+        If CheckData() Then
+            Dim bId As Integer
+            con.Open()
+            query = "SELECT Id FROM Buyers WHERE Name = @name and City = @city"
+            Using cmd As New SqlCommand(query, con)
+                cmd.Parameters.AddWithValue("@name", txtBuyer.Text)
+                cmd.Parameters.AddWithValue("@city", txtCity.Text)
+                bId = cmd.ExecuteScalar
+            End Using
+            con.Close()
+            If bId = 0 Then
+                bId = InsertBuyersDetails()
+            End If
+            Calculations()
+            InsertOrderDetails(bId)
+            GenerateInvoice(txtNewInvoice.Text)
+            LoadOrders()
         End If
-        Calculations()
-        Dim oId As Integer = InsertOrderDetails(bId)
-        GenerateInvoice(oId)
-        LoadOrders()
     End Sub
 
     Private Sub MainActivity_Load(sender As Object, e As EventArgs) Handles Me.Load
@@ -82,12 +82,12 @@ Public Class MainActivity
         txtBuyer.Text = StrConv(txtBuyer.Text, vbProperCase)
     End Sub
 
-    Private Sub HoverEffect(sender As Object, e As EventArgs) Handles cmdminimize.MouseEnter, cmdclose.MouseEnter, cmdbilling.MouseEnter, cmdorder.MouseEnter, cmdinventory.MouseEnter
+    Private Sub HoverEffect(sender As Object, e As EventArgs) Handles cmdminimize.MouseEnter, cmdclose.MouseEnter, cmdbilling.MouseEnter, cmdorder.MouseEnter, cmdinventory.MouseEnter, cmdAbout.MouseLeave
         sender.ForeColor = Color.Black
         sender.BackColor = Color.White
     End Sub
 
-    Private Sub HoverEffectEnd(sender As Object, e As EventArgs) Handles cmdminimize.MouseLeave, cmdclose.MouseLeave, cmdbilling.MouseLeave, cmdorder.MouseLeave, cmdinventory.MouseLeave
+    Private Sub HoverEffectEnd(sender As Object, e As EventArgs) Handles cmdminimize.MouseLeave, cmdclose.MouseLeave, cmdbilling.MouseLeave, cmdorder.MouseLeave, cmdinventory.MouseLeave, cmdAbout.MouseEnter
         For Each control In Me.Controls.OfType(Of Panel)
             If control.Name <> "navpanel" Then
                 If Not control.Visible And control.Name Is CType(sender, Label).Tag Then
@@ -123,7 +123,7 @@ Public Class MainActivity
                             "Address: " & dr.Item("Address"),
                             "City: " & dr.Item("City"),
                             "Place of supply: " & dr.Item("State"),
-                            "Product Name: ",
+                            "Product Name: " & dr.Item("ProductName"),
                             "Quantity: " & dr.Item("Qty"),
                             "Rate: " & dr.Item("Rate"),
                             "Total: " & dr.Item("Total"),
@@ -131,6 +131,7 @@ Public Class MainActivity
                         Using details As New ViewDetailsBox(desc)
                             Dim result = details.ShowDialog
                             If result = DialogResult.Yes Then
+                                txtNewInvoice.Text = dr.Item("Id")
                                 txtBuyer.Text = dr.Item("Name")
                                 txtAddress.Text = dr.Item("Address")
                                 txtCity.Text = dr.Item("City")
@@ -140,12 +141,16 @@ Public Class MainActivity
                                 txtLabour.Text = dr.Item("Labor")
                                 txtMobile.Text = dr.Item("Mobile")
                                 txtPlace.Text = dr.Item("State")
+                                selectProduct.SelectedText = dr.Item("ProductName")
                                 txtBags.Text = dr.Item("Qty")
                                 txtRate.Text = dr.Item("Rate")
                                 txtTransporter.Text = dr.Item("Transporter")
                                 dateDate.Value = dr.Item("Date")
                                 con.Close()
+                                Calculations()
                                 GenerateInvoice(oId)
+                                ClearValues()
+                                LoadOrders()
                             ElseIf result = DialogResult.No Then
                                 Using cmd As New SqlCommand("DELETE FROM Orders WHERE Id = @oid", con)
                                     cmd.Parameters.AddWithValue("@oid", oId)
@@ -159,6 +164,7 @@ Public Class MainActivity
                                         End Using
                                     End If
                                 End Using
+                                LoadSuggestions()
                                 LoadOrders()
                             End If
                         End Using
@@ -170,28 +176,64 @@ Public Class MainActivity
     End Sub
 
 
-    Private Sub Cmdadd_Click(sender As Object, e As EventArgs)
+    Private Sub Cmdadd_Click(sender As Object, e As EventArgs) Handles cmdadd.Click
         If txtNewProduct.Text <> "" Then
-            query = "INSERT INTO Products VALUES(@productname)"
-            con.Open()
-            Using cmd As New SqlCommand(query, con)
-                cmd.Parameters.AddWithValue("@productname", txtNewProduct.Text)
-                cmd.ExecuteNonQuery()
+            Dim quant As String = New Regex("\d+(?=[k|K][g|G])").Match(txtNewProduct.Text).Value
+            If quant = "" Then
+                Using confirm As New CustomDialog("Confirmation", "Sure want to add product without weight?", "Yes", "No")
+                    Dim result = confirm.ShowDialog
+                    If result = DialogResult.Yes Then
+                        Using msg As New CustomMsgBox("Default weight is 1Kg")
+                            msg.ShowDialog()
+                        End Using
+                        query = "INSERT INTO Products VALUES(@productname)"
+                        con.Open()
+                        Using cmd As New SqlCommand(query, con)
+                            cmd.Parameters.AddWithValue("@productname", txtNewProduct.Text)
+                            cmd.ExecuteNonQuery()
+                        End Using
+                        con.Close()
+                        LoadProducts()
+                    ElseIf result = DialogResult.No Then
+                        Using msg As New CustomMsgBox("Don't keep space between weight and unit(KG)")
+                            msg.ShowDialog()
+                        End Using
+                    End If
+                End Using
+            Else
+                query = "INSERT INTO Products VALUES(@productname)"
+                con.Open()
+                Using cmd As New SqlCommand(query, con)
+                    cmd.Parameters.AddWithValue("@productname", txtNewProduct.Text)
+                    cmd.ExecuteNonQuery()
+                End Using
+                con.Close()
+                LoadProducts()
+                Using msg As New CustomMsgBox("Product added successfully")
+                    msg.ShowDialog()
+                End Using
+            End If
+        Else
+            Using msg As New CustomMsgBox("Product name can't be blank")
+                msg.ShowDialog()
             End Using
-            con.Close()
-            LoadProducts()
         End If
     End Sub
 
-    Private Sub Cmddelete_Click(sender As Object, e As EventArgs)
-        query = "DELETE FROM Products WHERE Id = @id"
-        con.Open()
-        Using cmd As New SqlCommand(query, con)
-            cmd.Parameters.AddWithValue("@id", selectProductList.SelectedValue)
-            cmd.ExecuteNonQuery()
+    Private Sub Cmddelete_Click(sender As Object, e As EventArgs) Handles cmddelete.Click
+        Using confirm As New CustomDialog("Confirmation", "Do you want to delete this product?", "Yes", "No")
+            Dim result = confirm.ShowDialog
+            If result = DialogResult.Yes Then
+                query = "DELETE FROM Products WHERE Id = @id"
+                con.Open()
+                Using cmd As New SqlCommand(query, con)
+                    cmd.Parameters.AddWithValue("@id", selectProductList.SelectedValue)
+                    cmd.ExecuteNonQuery()
+                End Using
+                con.Close()
+                LoadProducts()
+            End If
         End Using
-        con.Close()
-        LoadProducts()
     End Sub
 
     Private Sub NavigationPanel(sender As Object, e As EventArgs) Handles cmdinventory.Click, cmdbilling.Click, cmdorder.Click
@@ -212,36 +254,46 @@ Public Class MainActivity
         Next
     End Sub
 
-    Private Sub Cmdrecieved_Click(sender As Object, e As EventArgs)
-        query = "SELECT Total from Orders WHERE Id = @id"
-        con.Open()
-        Using cmd As New SqlCommand(query, con)
-            cmd.Parameters.AddWithValue("@id", selectOrderId.Text)
-            If txtRecTotal.Text > cmd.ExecuteScalar Then
-                MsgBox("Watch your numbers man")
+    Private Sub Cmdrecieved_Click(sender As Object, e As EventArgs) Handles cmdrecieved.Click
+        If txtRecTotal.Text <> "" Then
+            If IsNumeric(txtRecTotal.Text) Then
+                Using confirm As New CustomDialog("Confirmation", "Did you recieved payment for sure?", "Yes", "No")
+                    Dim result = confirm.ShowDialog
+                    If result = DialogResult.Yes Then
+                        query = "SELECT Total-PaidTotal from Orders WHERE Id = @id"
+                        con.Open()
+                        Using cmd As New SqlCommand(query, con)
+                            cmd.Parameters.AddWithValue("@id", selectOrderId.Text)
+                            Dim remain As Integer = cmd.ExecuteScalar
+                            If txtRecTotal.Text > remain Then
+                                Using msg As New CustomMsgBox("Enter valid amount. Remaining amount is Rs." & remain)
+                                    msg.ShowDialog()
+                                End Using
+                            Else
+                                query = "UPDATE Orders SET PaidTotal += @recamount WHERE Id = @id"
+                                Using cmdupdate As New SqlCommand(query, con)
+                                    cmdupdate.Parameters.AddWithValue("@recamount", txtRecTotal.Text)
+                                    cmdupdate.Parameters.AddWithValue("@id", selectOrderId.Text)
+                                    cmdupdate.ExecuteNonQuery()
+                                End Using
+                            End If
+                        End Using
+                        con.Close()
+                    End If
+                End Using
             Else
-                query = "UPDATE Orders SET PaidTotal += @recamount WHERE Id = @id"
-                Using cmdupdate As New SqlCommand(query, con)
-                    cmdupdate.Parameters.AddWithValue("@recamount", txtRecTotal.Text)
-                    cmdupdate.Parameters.AddWithValue("@id", selectOrderId.Text)
-                    cmdupdate.ExecuteNonQuery()
+                Using msg As New CustomMsgBox("Enter valid amount")
+                    msg.ShowDialog()
                 End Using
             End If
-        End Using
-        con.Close()
+        End If
     End Sub
 
-    Private Function ResetApplication(ByVal passcode As String)
+    Public Function ResetApplication()
         con.Open()
 
         'Deleted all data in tables
-        query = "DELETE FROM Buyers; DELETE FROM Orders; DELETE FROM Products;"
-        Using cmd As New SqlCommand(query, con)
-            cmd.ExecuteNonQuery()
-        End Using
-
-        'Reset Idnentity Index
-        query = "DBCC CHECKIDENT('Orders', RESEED, 100)"
+        query = "DELETE FROM Orders; DELETE FROM Buyers; DELETE FROM Products;"
         Using cmd As New SqlCommand(query, con)
             cmd.ExecuteNonQuery()
         End Using
@@ -251,7 +303,16 @@ Public Class MainActivity
             cmd.ExecuteNonQuery()
         End Using
 
+        query = "DBCC CHECKIDENT('Products', RESEED, 1)"
+        Using cmd As New SqlCommand(query, con)
+            cmd.ExecuteNonQuery()
+        End Using
+
         con.Close()
+        Using msg As New CustomMsgBox("Application Resetted Successfully")
+            msg.ShowDialog()
+        End Using
+        Me.Close()
         Return 0
     End Function
 
@@ -266,41 +327,138 @@ Public Class MainActivity
             cmd.Parameters.AddWithValue("@mobile", txtMobile.Text)
             cmd.Parameters.AddWithValue("@gst", txtGSTNo.Text)
             cmd.Parameters.AddWithValue("@state", txtPlace.Text)
-
             bId = cmd.ExecuteScalar
         End Using
         con.Close()
         Return bId
     End Function
 
-    Public Function InsertOrderDetails(id)
+    Public Function InsertOrderDetails(ByVal id As Integer)
         con.Open()
-        query = "INSERT INTO Orders VALUES(@buyerid, @date, @productname, @hsn, @rate, @qty, @labor, @transporter, @total, 0); SELECT SCOPE_IDENTITY();"
-        Dim oId As Integer
+        query = "INSERT INTO Orders VALUES(@id, @buyerid, @date, @productname, @hsn, @rate, @qty, @labor, @transporter, @total, 0)"
         Using cmd As New SqlCommand(query, con)
+            cmd.Parameters.AddWithValue("@id", txtNewInvoice.Text)
             cmd.Parameters.AddWithValue("@buyerid", id)
             cmd.Parameters.AddWithValue("@date", dateDate.Value)
             cmd.Parameters.AddWithValue("@productname", selectProduct.Text)
-            cmd.Parameters.AddWithValue("@hsn", txtHSN.Text)
-            cmd.Parameters.AddWithValue("@rate", txtRate.Text)
-            cmd.Parameters.AddWithValue("@qty", txtBags.Text)
-            cmd.Parameters.AddWithValue("@labor", txtLabour.Text)
-            cmd.Parameters.AddWithValue("@total", total)
+            cmd.Parameters.AddWithValue("@hsn", Val(txtHSN.Text))
+            cmd.Parameters.AddWithValue("@rate", Val(txtRate.Text))
+            cmd.Parameters.AddWithValue("@qty", Val(txtBags.Text))
+            cmd.Parameters.AddWithValue("@labor", Val(txtLabour.Text))
+            cmd.Parameters.AddWithValue("@total", Val(total))
             cmd.Parameters.AddWithValue("@transporter", txtTransporter.Text)
-
-            oId = cmd.ExecuteScalar
+            cmd.ExecuteNonQuery()
         End Using
         con.Close()
-        Return oId
+        Return 0
     End Function
     Private Function CheckData()
-        Return 0
+        If IsNumeric(txtNewInvoice.Text) Then
+            Dim flag As Boolean = False
+            query = "SELECT Id FROM Orders WHERE Id = @id"
+            con.Open()
+            Using cmd As New SqlCommand(query, con)
+                cmd.Parameters.AddWithValue("@id", txtNewInvoice.Text)
+                If cmd.ExecuteScalar = 0 Then
+                    flag = True
+                End If
+            End Using
+            con.Close()
+            If flag Then
+                If txtBuyer.Text <> "" Then
+                    If txtCity.Text <> "" Then
+                        If IsNumeric(txtMobile.Text) And (txtMobile.Text.Length = 10 Or txtMobile.Text.Length = 12) Then
+                            If txtGSTNo.Text <> "" And txtGSTNo.Text.Length <> 45 Then
+                                If IsNumeric(txtHSN.Text) And txtHSN.Text <> "" Then
+                                    If IsNumeric(txtBags.Text) And txtBags.Text <> "" Then
+                                        If IsNumeric(txtRate.Text) And txtRate.Text <> "" Then
+                                            If IsNumeric(txtGST.Text) And txtGST.Text <> "" Then
+                                                If txtLabour.Text = "" Then
+                                                    txtLabour.Text = 0
+                                                    Return True
+                                                Else
+                                                    If IsNumeric(txtLabour.Text) Then
+                                                        Return True
+                                                    Else
+                                                        Using msg As New CustomMsgBox("Enter valid Labour Charges")
+                                                            msg.ShowDialog()
+                                                        End Using
+                                                        Return False
+                                                    End If
+                                                End If
+                                            Else
+                                                Using msg As New CustomMsgBox("Enter valid Invoice No.")
+                                                    msg.ShowDialog()
+                                                End Using
+                                                Return False
+                                            End If
+                                        Else
+                                            Using msg As New CustomMsgBox("Enter valid Product Rate")
+                                                msg.ShowDialog()
+                                            End Using
+                                            Return False
+                                        End If
+                                    Else
+                                        Using msg As New CustomMsgBox("Enter valid Number of bags")
+                                            msg.ShowDialog()
+                                        End Using
+                                        Return False
+                                    End If
+                                Else
+                                    Using msg As New CustomMsgBox("Enter valid HSN Code")
+                                        msg.ShowDialog()
+                                    End Using
+                                    Return False
+                                End If
+                            Else
+                                Using msg As New CustomMsgBox("Enter valid GST No.")
+                                    msg.ShowDialog()
+                                End Using
+                                Return False
+                            End If
+                        Else
+                            Using msg As New CustomMsgBox("Enter valid Mobile No.")
+                                msg.ShowDialog()
+                            End Using
+                            Return False
+                        End If
+                    Else
+                        Using msg As New CustomMsgBox("City name can't be blank")
+                            msg.ShowDialog()
+                        End Using
+                        Return False
+                    End If
+                Else
+                    Using msg As New CustomMsgBox("Buyers name can't be blank")
+                        msg.ShowDialog()
+                    End Using
+                    Return False
+                End If
+            Else
+                Using msg As New CustomMsgBox("Bill with that Invoice No. already exists")
+                    msg.ShowDialog()
+                End Using
+                Return False
+            End If
+        Else
+            Using msg As New CustomMsgBox("Enter valid Invoice No.")
+                msg.ShowDialog()
+            End Using
+            Return False
+        End If
+        Return True
     End Function
 
     Private Function Calculations()
-        quant = New Regex("\d+(?=[k|K][g|G])").Match(selectProduct.Text).Value
+        Dim match = New Regex("\d+(?=[k|K][g|G])").Match(selectProduct.Text)
+        If match.Success Then
+            quant = match.Value
+        Else
+            quant = 1
+        End If
         rate = Math.Round((txtRate.Text * 100) / 105, 2)
-        amount = Math.Round(quant * rate, 2) ''Rate * Qty
+        amount = Math.Round(quant * txtBags.Text * (rate / 100), 2) ''Rate * Qty
+
         taxable = Math.Round(txtLabour.Text + amount, 2) ''Labour + Rate * Qty
         gst = Math.Round((taxable * 2.5) / 100, 2) ''(Labour + Rate * Qty) * 2.5 / 100
         total = Math.Round(taxable + 2 * gst, 2)
@@ -309,55 +467,56 @@ Public Class MainActivity
         Return 0
     End Function
 
-    Private Function GenerateInvoice(oId)
+    Private Function GenerateInvoice(ByVal oId As Integer)
+        Dim path As String
         Using document = DocX.Load(Application.StartupPath & "/Template.docx")
-
+            document.SetDefaultFont(New Xceed.Document.NET.Font("Arial"), 10)
             '' Buyer's Details
-            document.Bookmarks("buyer").SetText(txtBuyer.Text) ''Input Type: Text
-            document.Bookmarks("address").SetText(txtAddress.Text) ''Input Type: Text
-            document.Bookmarks("city").SetText(txtCity.Text) ''Input Type: Text
-            document.Bookmarks("mobile").SetText(txtMobile.Text) ''Input Type: Text
-            document.Bookmarks("gstno").SetText(txtGSTNo.Text.ToUpper) ''Input Type: Text
-            document.Bookmarks("placesupply").SetText(txtPlace.Text) ''Input Type: Text
+            document.Bookmarks("buyer").Paragraph.ReplaceText("[buyer]", txtBuyer.Text) ''Input Type: Text
+            document.Bookmarks("address").Paragraph.ReplaceText("[address]", txtAddress.Text) ''Input Type: Text
+            document.Bookmarks("city").Paragraph.ReplaceText("[city]", txtCity.Text) ''Input Type: Text
+            document.Bookmarks("mobile").Paragraph.ReplaceText("[mobile]", txtMobile.Text) ''Input Type: Text
+            document.Bookmarks("gstno").Paragraph.ReplaceText("[gstno]", txtGSTNo.Text.ToUpper) ''Input Type: Text
+            document.Bookmarks("placesupply").Paragraph.ReplaceText("[placesupply]", txtPlace.Text) ''Input Type: Text
 
-            document.Bookmarks("invoice").SetText(oId) ''Automatic
-            document.Bookmarks("date").SetText(dateDate.Text) ''Input Type: Date
-            document.Bookmarks("transporter").SetText(txtTransporter.Text) ''Input Type: Text
+            document.Bookmarks("invoice").Paragraph.ReplaceText("[invoice]", oId) ''Automatic
+            document.Bookmarks("date").Paragraph.ReplaceText("[date]", dateDate.Text) ''Input Type: Date
+            document.Bookmarks("transporter").Paragraph.ReplaceText("[transporter]", txtTransporter.Text) ''Input Type: Text
 
             '' Product Details
-            document.Bookmarks("no").SetText("1") ''Automatic
-            document.Bookmarks("productname").SetText(selectProduct.Text) ''Input Type: Selection
-            document.Bookmarks("hsn").SetText(txtHSN.Text) ''Input
-            document.Bookmarks("bags").SetText(txtBags.Text) ''Input
-            document.Bookmarks("qty").SetText(quant * Val(txtBags.Text)) ''Automatic
+            document.Bookmarks("no").Paragraph.ReplaceText("[no]", "1") ''Automatic
+            document.Bookmarks("productname").Paragraph.ReplaceText("[productname]", selectProduct.Text) ''Input Type: Selection
+            document.Bookmarks("hsn").Paragraph.ReplaceText("[hsn]", txtHSN.Text) ''Input
+            document.Bookmarks("bags").Paragraph.ReplaceText("[bags]", txtBags.Text) ''Input
+            document.Bookmarks("qty").Paragraph.ReplaceText("[qty]", Val(quant) * Val(txtBags.Text)) ''Automatic
 
-            document.Bookmarks("net").SetText(Math.Round(Val(txtRate.Text), 2).ToString("F")) ''Input Probably Automatic
-            document.Bookmarks("rate").SetText(rate.ToString("F")) ''Input
-            document.Bookmarks("gst").SetText(txtGST.Text & "%") ''Input
+            document.Bookmarks("net").Paragraph.ReplaceText("[net]", Math.Round(Val(txtRate.Text), 2).ToString("F")) ''Input Probably Automatic
+            document.Bookmarks("rate").Paragraph.ReplaceText("[rate]", rate.ToString("F")) ''Input
+            document.Bookmarks("gst").Paragraph.ReplaceText("[gst]", txtGST.Text & "%") ''Input
 
-            document.Bookmarks("amount").SetText(amount.ToString("F"))
-            document.Bookmarks("subtotal").SetText(amount.ToString("F"))
+            document.Bookmarks("amount").Paragraph.ReplaceText("[amount]", amount.ToString("F"))
+            document.Bookmarks("subtotal").Paragraph.ReplaceText("[subtotal]", amount.ToString("F"))
 
 
             '' Office Work
-            document.Bookmarks("labour").SetText(Math.Round(Val(txtLabour.Text), 2).ToString("F")) ''Input
-            document.Bookmarks("taxable").SetText(taxable.ToString("F"))
-            document.Bookmarks("cgst").SetText(gst.ToString("F"))
-            document.Bookmarks("sgst").SetText(gst.ToString("F"))
+            document.Bookmarks("labour").Paragraph.ReplaceText("[labour]", Math.Round(Val(txtLabour.Text), 2).ToString("F")) ''Input
+            document.Bookmarks("taxable").Paragraph.ReplaceText("[taxable]", taxable.ToString("F"))
+            document.Bookmarks("cgst").Paragraph.ReplaceText("[cgst]", gst.ToString("F"))
+            document.Bookmarks("sgst").Paragraph.ReplaceText("[sgst]", gst.ToString("F"))
 
             If fraction <> 0 Then
                 If fraction > 0 Then
-                    document.Bookmarks("round").SetText("+" & fraction.ToString("F"))
+                    document.Bookmarks("round").Paragraph.ReplaceText("[round]", "+" & fraction.ToString("F"))
                 Else
-                    document.Bookmarks("round").SetText(fraction.ToString("F"))
+                    document.Bookmarks("round").Paragraph.ReplaceText("[round]", fraction.ToString("F"))
                 End If
             Else
                 document.Tables.First().RemoveRow(14)
             End If
 
-            document.Bookmarks("total").SetText(total & ".00") ''Taxable amount + CGST + SGST
+            document.Bookmarks("total").Paragraph.ReplaceText("[total]", total & ".00") ''Taxable amount + CGST + SGST
 
-            '' Past Billings of Buyer
+            ' Past Billings of Buyer
             query = "SELECT Id, Date, Total - PaidTotal Remaining, DATEDIFF(day, Date, @date) Days FROM Orders WHERE Total - PaidTotal > 0 AND BuyerId = (SELECT BuyerId FROM Orders WHERE Id = @id) AND Date <= @date"
             con.Open()
             Using cmd As New SqlCommand(query, con)
@@ -370,7 +529,7 @@ Public Class MainActivity
                     Dim dues As String = ""
                     While dr.Read
                         invoices &= dr.Item("Id") & vbNewLine
-                        dates &= Format(dr.Item("Date"), "dd-MM-yyyy") & vbNewLine
+                        dates &= Format(dr.Item("Date"), "dd/MM/yyyy") & vbNewLine
                         amounts &= dr.Item("Remaining") & vbNewLine
                         dues &= (dr.Item("Days") + 1) & vbNewLine
                     End While
@@ -381,8 +540,8 @@ Public Class MainActivity
                 End Using
             End Using
             con.Close()
-            document.Bookmarks("totalwords").SetText(NumeriCon.ConvertNum(Int(total)) & " Only") ''Automatic
-            Dim path As String = Application.StartupPath & "\Order " & oId & ".docx"
+            document.Bookmarks("totalwords").Paragraph.ReplaceText("[totalwords]", NumeriCon.ConvertNum(Int(total)) & " Only") ''Automatic
+            path = Application.StartupPath & "\Order " & oId & ".docx"
             document.SaveAs(path)
             PdfConversion(path)
             My.Computer.FileSystem.DeleteFile(path)
@@ -390,8 +549,8 @@ Public Class MainActivity
         Return 0
     End Function
 
-    Private Function PdfConversion(path)
-        Using doc As New Spire.Doc.Document(path.ToString)
+    Private Function PdfConversion(ByVal path As String)
+        Using doc As New Spire.Doc.Document(path)
             Using confirm As New CustomDialog("Confirmation", "Do you want to print invoice?", "Print", "Save")
                 Dim result = confirm.ShowDialog
                 If result = Windows.Forms.DialogResult.Yes Then
@@ -407,15 +566,17 @@ Public Class MainActivity
                             MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                         End Try
                     End Using
-                Else
+                ElseIf result = Windows.Forms.DialogResult.No Then
                     Using savebox As New SaveFileDialog
                         savebox.Filter = "Pdf Document|*.pdf"
                         savebox.Title = "Save Invoice Copy"
                         savebox.RestoreDirectory = True
                         If savebox.ShowDialog = DialogResult.OK Then
                             Dim savepath As String = savebox.FileName
-                            MsgBox(savepath)
                             doc.SaveToFile(savepath, Spire.Doc.FileFormat.PDF)
+                            Using msg As New CustomMsgBox("Invoice saved successfully")
+                                msg.ShowDialog()
+                            End Using
                         End If
                     End Using
                 End If
@@ -478,6 +639,7 @@ Public Class MainActivity
 
     Private Function LoadOrders()
         dataDetails.AlternatingRowsDefaultCellStyle = Nothing
+        Dim lastOrder As Integer = 100
         query = "SELECT Orders.Id, Name, City, Date, Total, PaidTotal FROM Buyers, Orders WHERE BuyerId = Buyers.Id"
         Using da As New SqlDataAdapter(query, con)
             Using ds As New DataSet
@@ -488,6 +650,7 @@ Public Class MainActivity
                     Dim dc As DataRow() = ds.Tables(0).Select("Total - PaidTotal > 0")
                     selectOrderId.DataSource = dc.CopyToDataTable
                     selectOrderId.DisplayMember = "Id"
+                    lastOrder = ds.Tables(0).Compute("max(Id)", String.Empty)
                 End If
             End Using
         End Using
@@ -507,6 +670,13 @@ Public Class MainActivity
         dataDetails.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders
         dataDetails.Columns("Id").HeaderText = "Invoice"
         dataDetails.Columns("Total").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        txtNewInvoice.Text = lastOrder + 1
         Return 0
     End Function
+
+    Private Sub CmdAbout_Click(sender As Object, e As EventArgs) Handles cmdAbout.Click
+        If aboutme.ShowDialog() = DialogResult.Yes Then
+            ResetApplication()
+        End If
+    End Sub
 End Class

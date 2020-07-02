@@ -1,5 +1,5 @@
 ﻿Imports System.Runtime.InteropServices
-Public Class CustomDialog
+Public Class CustomMsgBox
     Public Const WM_NCLBUTTONDOWN As Integer = &HA1
     Public Const HT_CAPTION As Integer = &H2
 
@@ -16,24 +16,13 @@ Public Class CustomDialog
             SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0)
         End If
     End Sub
-    Public Sub New(ByVal title As String, ByVal desc As String, ByVal confirm As String, ByVal abort As String)
+
+    Public Sub New(ByVal msg As String)
         InitializeComponent()
-        lbltitle.Text = title
-        lbldescription.Text = desc
-        cmdconfirm.Text = confirm
-        cmdabort.Text = abort
+        lbldescription.Text = msg
     End Sub
+
     Private Sub Cmdconfirm_Click(sender As Object, e As EventArgs) Handles cmdconfirm.Click
-        DialogResult = DialogResult.Yes
-        Me.Close()
-    End Sub
-
-    Private Sub Cmdabort_Click(sender As Object, e As EventArgs) Handles cmdabort.Click
-        DialogResult = DialogResult.No
-        Me.Close()
-    End Sub
-
-    Private Sub Cmdclose_Click(sender As Object, e As EventArgs) Handles cmdclose.Click
         Me.Close()
     End Sub
 End Class
