@@ -85,6 +85,9 @@
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Spire.Doc, Version=5.2.12.54040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
@@ -133,6 +136,7 @@
     <Compile Include="aboutme.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ApplicationEvents.vb" />
     <Compile Include="CustomDialog.Designer.vb">
       <DependentUpon>CustomDialog.vb</DependentUpon>
     </Compile>
@@ -249,6 +253,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>JTBase.mdf</DependentUpon>
     </Content>
+    <Content Include="Logo.ico" />
   </ItemGroup>
   <ItemGroup>
     <PublishFile Include="Spire.Pdf">
