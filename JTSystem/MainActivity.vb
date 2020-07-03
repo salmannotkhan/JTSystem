@@ -224,7 +224,7 @@ Public Class MainActivity
     End Sub
 
     Private Sub Cmddelete_Click(sender As Object, e As EventArgs) Handles cmddelete.Click
-        If selectProductList.SelectedValue <> "" Then
+        If selectProductList.Text <> "" Then
             Using confirm As New CustomDialog("Confirmation", "Do you want to delete this product?", "Yes", "No")
                 Dim result = confirm.ShowDialog
                 If result = DialogResult.Yes Then
