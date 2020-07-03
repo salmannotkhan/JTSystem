@@ -39,6 +39,10 @@ Public NotInheritable Class aboutme
     End Sub
 
     Private Sub Cmdclose_Click(sender As Object, e As EventArgs) Handles cmdclose.Click
+        count = 0
+        lblpass.Visible = False
+        cmdreset.Visible = False
+        txtpasscode.Visible = False
         Me.Close()
     End Sub
 
