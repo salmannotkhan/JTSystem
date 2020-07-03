@@ -22,9 +22,9 @@ Partial Class MainActivity
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.navpanel = New System.Windows.Forms.Panel()
         Me.cmdorder = New System.Windows.Forms.Label()
         Me.cmdinventory = New System.Windows.Forms.Label()
@@ -65,6 +65,7 @@ Partial Class MainActivity
         Me.detailspanel = New System.Windows.Forms.Panel()
         Me.dataDetails = New System.Windows.Forms.DataGridView()
         Me.inventorypanel = New System.Windows.Forms.Panel()
+        Me.cmdAbout = New System.Windows.Forms.Label()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Label17 = New System.Windows.Forms.Label()
@@ -78,7 +79,6 @@ Partial Class MainActivity
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.selectProductList = New System.Windows.Forms.ComboBox()
-        Me.cmdAbout = New System.Windows.Forms.Label()
         Me.navpanel.SuspendLayout()
         Me.billingpanel.SuspendLayout()
         Me.detailspanel.SuspendLayout()
@@ -561,36 +561,36 @@ Partial Class MainActivity
         Me.dataDetails.AllowUserToDeleteRows = False
         Me.dataDetails.AllowUserToResizeColumns = False
         Me.dataDetails.AllowUserToResizeRows = False
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Black
-        Me.dataDetails.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Arial Rounded MT Bold", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black
+        Me.dataDetails.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dataDetails.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.dataDetails.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
         Me.dataDetails.BackgroundColor = System.Drawing.Color.White
         Me.dataDetails.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dataDetails.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
         Me.dataDetails.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Calibri", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dataDetails.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Calibri", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dataDetails.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.dataDetails.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Calibri", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle6.Padding = New System.Windows.Forms.Padding(1, 5, 1, 5)
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dataDetails.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Calibri", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle3.Padding = New System.Windows.Forms.Padding(1, 5, 1, 5)
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dataDetails.DefaultCellStyle = DataGridViewCellStyle3
         Me.dataDetails.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dataDetails.GridColor = System.Drawing.Color.White
         Me.dataDetails.Location = New System.Drawing.Point(0, 0)
@@ -620,6 +620,21 @@ Partial Class MainActivity
         Me.inventorypanel.Size = New System.Drawing.Size(800, 0)
         Me.inventorypanel.TabIndex = 3
         '
+        'cmdAbout
+        '
+        Me.cmdAbout.AutoSize = True
+        Me.cmdAbout.BackColor = System.Drawing.Color.White
+        Me.cmdAbout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.cmdAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.cmdAbout.Font = New System.Drawing.Font("Calibri", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmdAbout.ForeColor = System.Drawing.Color.Black
+        Me.cmdAbout.Location = New System.Drawing.Point(19, 364)
+        Me.cmdAbout.Name = "cmdAbout"
+        Me.cmdAbout.Padding = New System.Windows.Forms.Padding(5)
+        Me.cmdAbout.Size = New System.Drawing.Size(59, 31)
+        Me.cmdAbout.TabIndex = 16
+        Me.cmdAbout.Text = "About"
+        '
         'GroupBox2
         '
         Me.GroupBox2.Controls.Add(Me.Label16)
@@ -627,7 +642,7 @@ Partial Class MainActivity
         Me.GroupBox2.Controls.Add(Me.cmdrecieved)
         Me.GroupBox2.Controls.Add(Me.selectOrderId)
         Me.GroupBox2.Controls.Add(Me.txtRecTotal)
-        Me.GroupBox2.Font = New System.Drawing.Font("Calibri", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox2.Font = New System.Drawing.Font("Calibri", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox2.Location = New System.Drawing.Point(15, 183)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(771, 100)
@@ -698,7 +713,7 @@ Partial Class MainActivity
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Controls.Add(Me.selectProductList)
-        Me.GroupBox1.Font = New System.Drawing.Font("Calibri", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox1.Font = New System.Drawing.Font("Calibri", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(15, 5)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(771, 167)
@@ -775,21 +790,6 @@ Partial Class MainActivity
         Me.selectProductList.Size = New System.Drawing.Size(159, 27)
         Me.selectProductList.TabIndex = 10
         Me.selectProductList.ValueMember = "Id"
-        '
-        'cmdAbout
-        '
-        Me.cmdAbout.AutoSize = True
-        Me.cmdAbout.BackColor = System.Drawing.Color.White
-        Me.cmdAbout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.cmdAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.cmdAbout.Font = New System.Drawing.Font("Calibri", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdAbout.ForeColor = System.Drawing.Color.Black
-        Me.cmdAbout.Location = New System.Drawing.Point(19, 364)
-        Me.cmdAbout.Name = "cmdAbout"
-        Me.cmdAbout.Padding = New System.Windows.Forms.Padding(5)
-        Me.cmdAbout.Size = New System.Drawing.Size(59, 31)
-        Me.cmdAbout.TabIndex = 16
-        Me.cmdAbout.Text = "About"
         '
         'MainActivity
         '

@@ -66,6 +66,7 @@ Public Class MainActivity
         LoadProducts()
         cmdbilling.ForeColor = Color.Black
         cmdbilling.BackColor = Color.White
+        cmdbilling.Font = New Font(cmdbilling.Font, FontStyle.Bold)
         inventorypanel.Hide()
         detailspanel.Hide()
     End Sub
@@ -252,6 +253,9 @@ Public Class MainActivity
             If Not btn Is sender Then
                 btn.ForeColor = Color.White
                 btn.BackColor = Color.Black
+                btn.Font = New Font(btn.Font, FontStyle.Regular)
+            Else
+                btn.Font = New Font(btn.Font, FontStyle.Bold)
             End If
         Next
     End Sub
