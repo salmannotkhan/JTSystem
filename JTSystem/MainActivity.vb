@@ -4,8 +4,7 @@ Imports Xceed.Words.NET
 Imports System.Text.RegularExpressions
 
 Public Class MainActivity
-    'ReadOnly con As New SqlConnection("Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Salman Shaikh\source\repos\JTSystem\JTSystem\JTBASE.mdf;Integrated Security=True;Connect Timeout=30")
-    ReadOnly con As New SqlConnection("Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" & Application.StartupPath & "\JTBASE.mdf;Integrated Security=True;Connect Timeout=30")
+    ReadOnly con As New SqlConnection(My.Settings.JTBASEConnectionString)
     ReadOnly dsBuyers As New DataSet
     Dim query As String
     Dim total As Double
@@ -258,36 +257,38 @@ Public Class MainActivity
     End Sub
 
     Private Sub Cmdrecieved_Click(sender As Object, e As EventArgs) Handles cmdrecieved.Click
-        If txtRecTotal.Text <> "" Then
-            If IsNumeric(txtRecTotal.Text) Then
-                Using confirm As New CustomDialog("Confirmation", "Did you recieved payment for sure?", "Yes", "No")
-                    Dim result = confirm.ShowDialog
-                    If result = DialogResult.Yes Then
-                        query = "SELECT Total-PaidTotal from Orders WHERE Id = @id"
-                        con.Open()
-                        Using cmd As New SqlCommand(query, con)
-                            cmd.Parameters.AddWithValue("@id", selectOrderId.Text)
-                            Dim remain As Integer = cmd.ExecuteScalar
-                            If txtRecTotal.Text > remain Then
-                                Using msg As New CustomMsgBox("Enter valid amount. Remaining amount is Rs." & remain)
-                                    msg.ShowDialog()
-                                End Using
-                            Else
-                                query = "UPDATE Orders SET PaidTotal += @recamount WHERE Id = @id"
-                                Using cmdupdate As New SqlCommand(query, con)
-                                    cmdupdate.Parameters.AddWithValue("@recamount", txtRecTotal.Text)
-                                    cmdupdate.Parameters.AddWithValue("@id", selectOrderId.Text)
-                                    cmdupdate.ExecuteNonQuery()
-                                End Using
-                            End If
-                        End Using
-                        con.Close()
-                    End If
-                End Using
-            Else
-                Using msg As New CustomMsgBox("Enter valid amount")
-                    msg.ShowDialog()
-                End Using
+        If selectOrderId.Text <> "" Then
+            If txtRecTotal.Text <> "" Then
+                If IsNumeric(txtRecTotal.Text) Then
+                    Using confirm As New CustomDialog("Confirmation", "Did you recieved payment for sure?", "Yes", "No")
+                        Dim result = confirm.ShowDialog
+                        If result = DialogResult.Yes Then
+                            query = "SELECT Total-PaidTotal from Orders WHERE Id = @id"
+                            con.Open()
+                            Using cmd As New SqlCommand(query, con)
+                                cmd.Parameters.AddWithValue("@id", selectOrderId.Text)
+                                Dim remain As Integer = cmd.ExecuteScalar
+                                If txtRecTotal.Text > remain Then
+                                    Using msg As New CustomMsgBox("Enter valid amount. Remaining amount is Rs." & remain)
+                                        msg.ShowDialog()
+                                    End Using
+                                Else
+                                    query = "UPDATE Orders SET PaidTotal += @recamount WHERE Id = @id"
+                                    Using cmdupdate As New SqlCommand(query, con)
+                                        cmdupdate.Parameters.AddWithValue("@recamount", txtRecTotal.Text)
+                                        cmdupdate.Parameters.AddWithValue("@id", selectOrderId.Text)
+                                        cmdupdate.ExecuteNonQuery()
+                                    End Using
+                                End If
+                            End Using
+                            con.Close()
+                        End If
+                    End Using
+                Else
+                    Using msg As New CustomMsgBox("Enter valid amount")
+                        msg.ShowDialog()
+                    End Using
+                End If
             End If
         End If
     End Sub

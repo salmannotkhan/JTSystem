@@ -66,7 +66,7 @@ Public NotInheritable Class aboutme
                 End If
             End Using
         Else
-            Using msg As New CustomMsgBox("You're not dev, kid step aside!")
+            Using msg As New CustomMsgBox("You're not dev, step aside kid!")
                 msg.ShowDialog()
             End Using
         End If

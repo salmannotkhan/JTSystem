@@ -113,6 +113,7 @@ Partial Class aboutme
         '
         Me.txtpasscode.Location = New System.Drawing.Point(107, 136)
         Me.txtpasscode.Name = "txtpasscode"
+        Me.txtpasscode.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.txtpasscode.Size = New System.Drawing.Size(100, 27)
         Me.txtpasscode.TabIndex = 8
         Me.txtpasscode.Visible = False
