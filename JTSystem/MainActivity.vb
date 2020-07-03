@@ -224,19 +224,25 @@ Public Class MainActivity
     End Sub
 
     Private Sub Cmddelete_Click(sender As Object, e As EventArgs) Handles cmddelete.Click
-        Using confirm As New CustomDialog("Confirmation", "Do you want to delete this product?", "Yes", "No")
-            Dim result = confirm.ShowDialog
-            If result = DialogResult.Yes Then
-                query = "DELETE FROM Products WHERE Id = @id"
-                con.Open()
-                Using cmd As New SqlCommand(query, con)
-                    cmd.Parameters.AddWithValue("@id", selectProductList.SelectedValue)
-                    cmd.ExecuteNonQuery()
-                End Using
-                con.Close()
-                LoadProducts()
-            End If
-        End Using
+        If selectProductList.SelectedValue <> "" Then
+            Using confirm As New CustomDialog("Confirmation", "Do you want to delete this product?", "Yes", "No")
+                Dim result = confirm.ShowDialog
+                If result = DialogResult.Yes Then
+                    query = "DELETE FROM Products WHERE Id = @id"
+                    con.Open()
+                    Using cmd As New SqlCommand(query, con)
+                        cmd.Parameters.AddWithValue("@id", selectProductList.SelectedValue)
+                        cmd.ExecuteNonQuery()
+                    End Using
+                    con.Close()
+                    LoadProducts()
+                End If
+            End Using
+        Else
+            Using msg As New CustomMsgBox("Nothing to delete")
+                msg.ShowDialog()
+            End Using
+        End If
     End Sub
 
     Private Sub NavigationPanel(sender As Object, e As EventArgs) Handles cmdinventory.Click, cmdbilling.Click, cmdorder.Click
@@ -375,45 +381,52 @@ Public Class MainActivity
             If flag Then
                 If txtBuyer.Text <> "" Then
                     If txtCity.Text <> "" Then
-                        If IsNumeric(txtMobile.Text) And (txtMobile.Text.Length = 10 Or txtMobile.Text.Length = 12) Then
+                        If IsNumeric(txtMobile.Text) And (txtMobile.Text.Length = 10 Or txtMobile.Text.Length = 11) Then
                             If txtGSTNo.Text <> "" And txtGSTNo.Text.Length = 15 Then
-                                If IsNumeric(txtHSN.Text) And txtHSN.Text <> "" Then
-                                    If IsNumeric(txtBags.Text) And txtBags.Text <> "" Then
-                                        If IsNumeric(txtRate.Text) And txtRate.Text <> "" Then
-                                            If IsNumeric(txtGST.Text) And txtGST.Text <> "" Then
-                                                If txtLabour.Text = "" Then
-                                                    txtLabour.Text = 0
-                                                    Return True
-                                                Else
-                                                    If IsNumeric(txtLabour.Text) Then
+                                If selectProduct.Text <> "" Then
+                                    If IsNumeric(txtHSN.Text) And txtHSN.Text <> "" Then
+                                        If IsNumeric(txtBags.Text) And txtBags.Text <> "" Then
+                                            If IsNumeric(txtRate.Text) And txtRate.Text <> "" Then
+                                                If IsNumeric(txtGST.Text) And txtGST.Text <> "" Then
+                                                    If txtLabour.Text = "" Then
+                                                        txtLabour.Text = 0
                                                         Return True
                                                     Else
-                                                        Using msg As New CustomMsgBox("Enter valid Labour Charges")
-                                                            msg.ShowDialog()
-                                                        End Using
-                                                        Return False
+                                                        If IsNumeric(txtLabour.Text) Then
+                                                            Return True
+                                                        Else
+                                                            Using msg As New CustomMsgBox("Enter valid Labour Charges")
+                                                                msg.ShowDialog()
+                                                            End Using
+                                                            Return False
+                                                        End If
                                                     End If
+                                                Else
+                                                    Using msg As New CustomMsgBox("Enter valid GST Rate")
+                                                        msg.ShowDialog()
+                                                    End Using
+                                                    Return False
                                                 End If
                                             Else
-                                                Using msg As New CustomMsgBox("Enter valid GST Rate")
+                                                Using msg As New CustomMsgBox("Enter valid Product Rate")
                                                     msg.ShowDialog()
                                                 End Using
                                                 Return False
                                             End If
                                         Else
-                                            Using msg As New CustomMsgBox("Enter valid Product Rate")
+                                            Using msg As New CustomMsgBox("Enter valid Number of bags")
                                                 msg.ShowDialog()
                                             End Using
                                             Return False
                                         End If
                                     Else
-                                        Using msg As New CustomMsgBox("Enter valid Number of bags")
+                                        Using msg As New CustomMsgBox("Enter valid HSN Code")
                                             msg.ShowDialog()
                                         End Using
                                         Return False
                                     End If
                                 Else
-                                    Using msg As New CustomMsgBox("Enter valid HSN Code")
+                                    Using msg As New CustomMsgBox("Please add product first")
                                         msg.ShowDialog()
                                     End Using
                                     Return False
