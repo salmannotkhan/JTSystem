@@ -80,6 +80,7 @@ Partial Class MainActivity
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.selectProductList = New System.Windows.Forms.ComboBox()
+        Me.cmdgstdisable = New System.Windows.Forms.Button()
         Me.navpanel.SuspendLayout()
         Me.billingpanel.SuspendLayout()
         Me.detailspanel.SuspendLayout()
@@ -177,6 +178,7 @@ Partial Class MainActivity
         '
         Me.billingpanel.BackColor = System.Drawing.Color.White
         Me.billingpanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.billingpanel.Controls.Add(Me.cmdgstdisable)
         Me.billingpanel.Controls.Add(Me.txtNewInvoice)
         Me.billingpanel.Controls.Add(Me.Label19)
         Me.billingpanel.Controls.Add(Me.Label9)
@@ -574,7 +576,7 @@ Partial Class MainActivity
         Me.dataDetails.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dataDetails.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
         Me.dataDetails.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
         DataGridViewCellStyle2.BackColor = System.Drawing.Color.White
         DataGridViewCellStyle2.Font = New System.Drawing.Font("Calibri", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black
@@ -792,6 +794,17 @@ Partial Class MainActivity
         Me.selectProductList.TabIndex = 10
         Me.selectProductList.ValueMember = "Id"
         '
+        'cmdgstdisable
+        '
+        Me.cmdgstdisable.BackColor = System.Drawing.Color.Black
+        Me.cmdgstdisable.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.cmdgstdisable.Location = New System.Drawing.Point(327, 199)
+        Me.cmdgstdisable.Name = "cmdgstdisable"
+        Me.cmdgstdisable.Size = New System.Drawing.Size(22, 23)
+        Me.cmdgstdisable.TabIndex = 112
+        Me.cmdgstdisable.Text = "X"
+        Me.cmdgstdisable.UseVisualStyleBackColor = False
+        '
         'MainActivity
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -879,4 +892,5 @@ Partial Class MainActivity
     Friend WithEvents Label19 As Label
     Friend WithEvents dataDetails As DataGridView
     Friend WithEvents cmdAbout As Label
+    Friend WithEvents cmdgstdisable As Button
 End Class

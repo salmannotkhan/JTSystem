@@ -196,6 +196,7 @@ Public Class MainActivity
                             cmd.Parameters.AddWithValue("@productname", txtNewProduct.Text)
                             cmd.ExecuteNonQuery()
                         End Using
+                        txtNewProduct.Clear()
                         con.Close()
                         LoadProducts()
                     ElseIf result = DialogResult.No Then
@@ -211,6 +212,7 @@ Public Class MainActivity
                     cmd.Parameters.AddWithValue("@productname", txtNewProduct.Text)
                     cmd.ExecuteNonQuery()
                 End Using
+                txtNewProduct.Clear()
                 con.Close()
                 LoadProducts()
                 Using msg As New CustomMsgBox("Product added successfully")
@@ -290,6 +292,7 @@ Public Class MainActivity
                                         cmdupdate.Parameters.AddWithValue("@id", selectOrderId.Text)
                                         cmdupdate.ExecuteNonQuery()
                                     End Using
+                                    txtRecTotal.Clear()
                                 End If
                             End Using
                             con.Close()
@@ -551,7 +554,6 @@ Public Class MainActivity
             Else
                 document.Tables.First().RemoveRow(14)
             End If
-
             document.Bookmarks("total").Paragraph.ReplaceText("[total]", total & ".00") ''Taxable amount + CGST + SGST
 
             ' Past Billings of Buyer
@@ -578,8 +580,9 @@ Public Class MainActivity
                 End Using
             End Using
             con.Close()
+
             document.Bookmarks("totalwords").Paragraph.ReplaceText("[totalwords]", NumeriCon.ConvertNum(Int(total)) & " Only") ''Automatic
-            path = Application.StartupPath & "\Order " & oId & ".docx"
+            path = Application.StartupPath & "\Invoice No." & oId & ".docx"
             document.SaveAs(path)
             PdfConversion(path)
             My.Computer.FileSystem.DeleteFile(path)
@@ -609,6 +612,7 @@ Public Class MainActivity
                         savebox.Filter = "Pdf Document|*.pdf"
                         savebox.Title = "Save Invoice Copy"
                         savebox.RestoreDirectory = True
+                        savebox.FileName = IO.Path.GetFileNameWithoutExtension(path)
                         If savebox.ShowDialog = DialogResult.OK Then
                             Dim savepath As String = savebox.FileName
                             doc.SaveToFile(savepath, Spire.Doc.FileFormat.PDF)
@@ -686,12 +690,27 @@ Public Class MainActivity
                 dataDetails.Columns("PaidTotal").Visible = False
                 If ds.Tables(0).Rows.Count > 0 Then
                     Dim dc As DataRow() = ds.Tables(0).Select("Total - PaidTotal > 0")
-                    selectOrderId.DataSource = dc.CopyToDataTable
-                    selectOrderId.DisplayMember = "Id"
-                    lastOrder = ds.Tables(0).Compute("max(Id)", String.Empty)
+                    If dc.Length > 0 Then
+                        selectOrderId.DataSource = dc.CopyToDataTable
+                        selectOrderId.DisplayMember = "Id"
+                        lastOrder = ds.Tables(0).Compute("max(Id)", String.Empty)
+                    Else
+                        selectOrderId.DataSource = Nothing
+                    End If
+                Else
+                    selectOrderId.DataSource = Nothing
                 End If
             End Using
         End Using
+        If dataDetails.Columns("Status") Is Nothing Then
+            Using viewstatus As New DataGridViewTextBoxColumn
+                With viewstatus
+                    .Name = "Status"
+                    .HeaderText = "Status"
+                End With
+                dataDetails.Columns.Add(viewstatus)
+            End Using
+        End If
         If dataDetails.Columns("View Details") Is Nothing Then
             Using viewdetails As New DataGridViewButtonColumn
                 With viewdetails
@@ -704,6 +723,14 @@ Public Class MainActivity
                 dataDetails.Columns.Add(viewdetails)
             End Using
         End If
+        For i As Integer = 0 To dataDetails.Rows.Count - 1
+            If dataDetails.Item("Remain", i).Value > 0 Then
+                dataDetails.Item("Status", i).Value = "Unpaid"
+            Else
+                dataDetails.Item("Status", i).Value = "Paid"
+            End If
+        Next
+        dataDetails.Columns("Remain").Visible = False
         dataDetails.Columns("Name").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
         dataDetails.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders
         dataDetails.Columns("Id").HeaderText = "Invoice"
@@ -715,6 +742,16 @@ Public Class MainActivity
     Private Sub CmdAbout_Click(sender As Object, e As EventArgs) Handles cmdAbout.Click
         If aboutme.ShowDialog() = DialogResult.Yes Then
             ResetApplication()
+        End If
+    End Sub
+
+    Private Sub Cmdgstdisable_Click(sender As Object, e As EventArgs) Handles cmdgstdisable.Click
+        If txtGSTNo.Enabled Then
+            txtGSTNo.Text = "               "
+            txtGSTNo.Enabled = False
+        Else
+            txtGSTNo.Clear()
+            txtGSTNo.Enabled = True
         End If
     End Sub
 End Class
