@@ -53,6 +53,7 @@ Public Class MainActivity
             If bId = 0 Then
                 bId = InsertBuyersDetails()
             End If
+            UpdateBuyersDetails(bId)
             Calculations()
             InsertOrderDetails(bId)
             GenerateInvoice(txtNewInvoice.Text)
@@ -167,6 +168,7 @@ Public Class MainActivity
                                         End Using
                                     End If
                                 End Using
+                                con.Close()
                                 LoadSuggestions()
                                 LoadOrders()
                             End If
@@ -177,7 +179,6 @@ Public Class MainActivity
             con.Close()
         End If
     End Sub
-
 
     Private Sub Cmdadd_Click(sender As Object, e As EventArgs) Handles cmdadd.Click
         If txtNewProduct.Text <> "" Then
@@ -292,6 +293,7 @@ Public Class MainActivity
                                 End If
                             End Using
                             con.Close()
+                            LoadOrders()
                         End If
                     End Using
                 Else
@@ -345,6 +347,21 @@ Public Class MainActivity
         End Using
         con.Close()
         Return bId
+    End Function
+    Public Function UpdateBuyersDetails(id)
+        con.Open()
+        query = "UPDATE Buyers SET Name = @name, Address = @address, City = @city, Mobile = @mobile, GST = @gst, State = @state WHERE Id = @id"
+        Using cmd = New SqlCommand(query, con)
+            cmd.Parameters.AddWithValue("@id", id)
+            cmd.Parameters.AddWithValue("@name", txtBuyer.Text)
+            cmd.Parameters.AddWithValue("@address", txtAddress.Text)
+            cmd.Parameters.AddWithValue("@city", txtCity.Text)
+            cmd.Parameters.AddWithValue("@mobile", txtMobile.Text)
+            cmd.Parameters.AddWithValue("@gst", txtGSTNo.Text)
+            cmd.Parameters.AddWithValue("@state", txtPlace.Text)
+        End Using
+        con.Close()
+        Return 0
     End Function
 
     Public Function InsertOrderDetails(ByVal id As Integer)
@@ -629,7 +646,6 @@ Public Class MainActivity
 
     Private Function LoadSuggestions()
         Dim suggestions As New AutoCompleteStringCollection()
-
         con.Open()
         query = "SELECT * FROM Buyers"
         Using da As New SqlDataAdapter(query, con) 'This link Adapter with command
@@ -641,6 +657,7 @@ Public Class MainActivity
             suggestions.Add(dsBuyers.Tables(0).Rows(i).Item(1))
         Next
         txtBuyer.AutoCompleteCustomSource = suggestions
+
         Return 0
     End Function
     Private Function LoadProducts()
@@ -661,7 +678,7 @@ Public Class MainActivity
     Private Function LoadOrders()
         dataDetails.AlternatingRowsDefaultCellStyle = Nothing
         Dim lastOrder As Integer = 100
-        query = "SELECT Orders.Id, Name, City, Date, Total, PaidTotal FROM Buyers, Orders WHERE BuyerId = Buyers.Id"
+        query = "SELECT Orders.Id, Name, City, Date, Total, PaidTotal, Total - PaidTotal Remain FROM Buyers, Orders WHERE BuyerId = Buyers.Id"
         Using da As New SqlDataAdapter(query, con)
             Using ds As New DataSet
                 da.Fill(ds)
