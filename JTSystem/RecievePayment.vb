@@ -30,6 +30,7 @@ Public Class RecievePayment
     Private Sub Cmdconfirm_Click(sender As Object, e As EventArgs) Handles cmdconfirm.Click
         If IsNumeric(txtrecieved.Text) Then
             amount = txtrecieved.Text
+            DialogResult = DialogResult.OK
             Me.Close()
         Else
             Using msg As New CustomMsgBox("Enter valid amount")

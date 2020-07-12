@@ -36,4 +36,14 @@ Public Class CustomDialog
     Private Sub Cmdclose_Click(sender As Object, e As EventArgs) Handles cmdclose.Click
         Me.Close()
     End Sub
+
+    Private Sub HoverEffect(sender As Object, e As EventArgs) Handles cmdclose.MouseEnter
+        sender.ForeColor = Color.Black
+        sender.BackColor = Color.White
+    End Sub
+
+    Private Sub HoverEffectEnd(sender As Object, e As EventArgs) Handles cmdclose.MouseLeave
+        sender.ForeColor = Color.White
+        sender.BackColor = Color.Black
+    End Sub
 End Class

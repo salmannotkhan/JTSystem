@@ -107,7 +107,7 @@ Public Class MainActivity
                     Dim oid As Integer = gridDetails.Rows(e.RowIndex).Cells("Id").Value
                     Using pay As New RecievePayment("Recieve payment for Order No." & oid)
                         Dim payresult = pay.ShowDialog
-                        If payresult = 2 Then
+                        If payresult = DialogResult.OK Then
                             Dim recieved = pay.amount
                             If IsNumeric(recieved) Then
                                 Using confirm As New CustomDialog("Confirmation", "Did you recieved payment for sure?", "Yes", "No")
@@ -773,7 +773,6 @@ Public Class MainActivity
     Private Sub Cmdpurchase_Click(sender As Object, e As EventArgs) Handles cmdpurchase.Click
         If selectProductlistbuy.Text <> "" Then
             If txtseller.Text <> "" Then
-
                 If IsNumeric(txtbuyrate.Text) And Val(txtbuyrate.Text) <> 0 Then
                     If IsNumeric(txtbuyqty.Text) And Val(txtbuyqty.Text) <> 0 Then
                         query = "INSERT INTO Purchase VALUES(@date, @seller, @productname, @rate, @qty)"
