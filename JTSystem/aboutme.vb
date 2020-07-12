@@ -1,5 +1,5 @@
 ﻿Imports System.Runtime.InteropServices
-Public NotInheritable Class aboutme
+Public NotInheritable Class AboutMe
     Dim count As Integer = 0
 
     Public Const WM_NCLBUTTONDOWN As Integer = &HA1
@@ -19,12 +19,12 @@ Public NotInheritable Class aboutme
         End If
     End Sub
 
-    Private Sub aboutme_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub AboutMe_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim ApplicationTitle As String
         If My.Application.Info.Title <> "" Then
             ApplicationTitle = My.Application.Info.Title
         Else
-            ApplicationTitle = System.IO.Path.GetFileNameWithoutExtension(My.Application.Info.AssemblyName)
+            ApplicationTitle = IO.Path.GetFileNameWithoutExtension(My.Application.Info.AssemblyName)
         End If
         Me.Text = String.Format("About {0}", ApplicationTitle)
         Me.LabelProductName.Text = My.Application.Info.ProductName
@@ -40,7 +40,7 @@ Public NotInheritable Class aboutme
         Me.Close()
     End Sub
 
-    Private Sub trigger_Click(sender As Object, e As EventArgs) Handles trigger.Click
+    Private Sub Trigger_Click(sender As Object, e As EventArgs) Handles trigger.Click
         If count = 11 Then
             lblpass.Visible = True
             cmdreset.Visible = True

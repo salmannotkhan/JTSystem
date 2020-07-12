@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>10</ApplicationRevision>
+    <ApplicationRevision>11</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -130,10 +130,10 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="aboutme.Designer.vb">
-      <DependentUpon>aboutme.vb</DependentUpon>
+    <Compile Include="AboutMe.Designer.vb">
+      <DependentUpon>AboutMe.vb</DependentUpon>
     </Compile>
-    <Compile Include="aboutme.vb">
+    <Compile Include="AboutMe.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ApplicationEvents.vb" />
@@ -171,6 +171,18 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="NumeriCon.vb" />
+    <Compile Include="RecievePayment.Designer.vb">
+      <DependentUpon>RecievePayment.vb</DependentUpon>
+    </Compile>
+    <Compile Include="RecievePayment.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StockDetails.Designer.vb">
+      <DependentUpon>StockDetails.vb</DependentUpon>
+    </Compile>
+    <Compile Include="StockDetails.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ViewDetailsBox.Designer.vb">
       <DependentUpon>ViewDetailsBox.vb</DependentUpon>
     </Compile>
@@ -179,8 +191,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="aboutme.resx">
-      <DependentUpon>aboutme.vb</DependentUpon>
+    <EmbeddedResource Include="AboutMe.resx">
+      <DependentUpon>AboutMe.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomDialog.resx">
       <DependentUpon>CustomDialog.vb</DependentUpon>
@@ -196,6 +208,12 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RecievePayment.resx">
+      <DependentUpon>RecievePayment.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StockDetails.resx">
+      <DependentUpon>StockDetails.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ViewDetailsBox.resx">
       <DependentUpon>ViewDetailsBox.vb</DependentUpon>
